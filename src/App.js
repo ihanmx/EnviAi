@@ -9,7 +9,7 @@ import CheckoutPage from "./components/CheckoutPage";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { CartProductsContext } from "./Contexts/CartProductsContext";
-
+import { UserDataContext } from "./Contexts/UserDataContext";
 function App() {
   const cartProductsinitial = [
     {
@@ -55,25 +55,39 @@ function App() {
 
   const [CartProducts, setCartProducts] = useState(cartProductsinitial);
 
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    region: "",
+    language: "",
+  });
+
   return (
-    <CartProductsContext.Provider value={{ CartProducts, setCartProducts }}>
-      <div>
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<Homepage />}></Route>
-          <Route path="/Homepage" element={<Homepage />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
-          <Route path="/signin" element={<SignInPage />}></Route>
-          <Route path="/DesignWhithAI" element={<DesignWhithAIPage />}></Route>
-          <Route
-            path="/ChooseProductPage"
-            element={<ChooseProductPage />}
-          ></Route>
-          <Route path="/AccountPage" element={<AccountPage />}></Route>
-          <Route path="/CheckoutPage" element={<CheckoutPage />}></Route>
-        </Routes>
-      </div>
-    </CartProductsContext.Provider>
+    <UserDataContext.Provider value={{ userData, setUserData }}>
+      <CartProductsContext.Provider value={{ CartProducts, setCartProducts }}>
+        <div>
+          {/* Routes */}
+          <Routes>
+            <Route path="/" element={<Homepage />}></Route>
+            <Route path="/Homepage" element={<Homepage />}></Route>
+            <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/signin" element={<SignInPage />}></Route>
+            <Route
+              path="/DesignWhithAI"
+              element={<DesignWhithAIPage />}
+            ></Route>
+            <Route
+              path="/ChooseProductPage"
+              element={<ChooseProductPage />}
+            ></Route>
+            <Route path="/AccountPage" element={<AccountPage />}></Route>
+            <Route path="/CheckoutPage" element={<CheckoutPage />}></Route>
+          </Routes>
+        </div>
+      </CartProductsContext.Provider>
+    </UserDataContext.Provider>
   );
 }
 

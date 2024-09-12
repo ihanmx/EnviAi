@@ -14,7 +14,7 @@ export default function AccountPage() {
         sx={{
           padding: "30px",
           height: "85vh",
-          width: "100vw",
+          maxWidth: "100vw",
         }}
       >
         {/* Profile and timezone container*/}
