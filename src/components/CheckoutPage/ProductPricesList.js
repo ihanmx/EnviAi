@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CartProductsContext } from "../Contexts/CartProductsContext";
+import { CartProductsContext } from "../../Contexts/CartProductsContext";
 import { Stack } from "@mui/material";
 
 function PricesContainer({ key, price }) {

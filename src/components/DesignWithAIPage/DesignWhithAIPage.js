@@ -1,10 +1,15 @@
-import React from "react";
-import MainNav from "./MainNav";
+import React, { useState } from "react";
+import MainNav from "../Navs/MainNav";
 import { Stack, TextField, InputAdornment, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import AIRobot from "../images/AIRobot.png";
+import AIRobot from "../../images/AIRobot.png";
 
 export default function DesignWithAIPage() {
+  const [userDescription, setUserDescription] = useState("");
+
+  function handleInput(event) {
+    setUserDescription(event.target.value);
+  }
   return (
     <>
       <MainNav isDarkMode={true} />
@@ -43,6 +48,8 @@ export default function DesignWithAIPage() {
               width: "80vw",
               borderRadius: "50px",
             }}
+            value={userDescription}
+            onChange={handleInput}
           />
         </form>
         <div

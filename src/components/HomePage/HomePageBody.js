@@ -1,5 +1,5 @@
-import homeImage from "../images/RightImg.png";
-import logoTitle from "../images/logoTitle.png";
+import homeImage from "../../images/RightImg.png";
+import logoTitle from "../../images/logoTitle.png";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 function HomePageBody() {

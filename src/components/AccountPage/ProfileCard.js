@@ -1,7 +1,6 @@
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
-import userAvatar from "../images/userAvatar.png";
 import { useState } from "react";
 export default function ProfileCard() {
   const [image, setImage] = useState("");

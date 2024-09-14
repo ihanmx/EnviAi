@@ -1,10 +1,17 @@
-import SigninLoginNav from "./SigninLoginNav";
+import SigninLoginNav from "../Navs/SigninLoginNav";
+import loginPageImg from "../../images/loginPageImg.png";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import SigninPageImg from "../images/SigninPageImg.png";
+import { useState } from "react";
 
-export default function SignInPage() {
+export default function LoginPage() {
+  const [loginData, setloginData] = useState({ email: "", password: "" });
+
+  function handleInputChange() {
+    alert("hi");
+  }
+
   return (
     <>
       <Stack
@@ -15,7 +22,7 @@ export default function SignInPage() {
         {/* Image Section */}
         <Stack sx={{ width: "50vw", height: "100%" }}>
           <img
-            src={SigninPageImg}
+            src={loginPageImg}
             alt="Login"
             style={{ objectFit: "cover", width: "100%", height: "100%" }}
           />
@@ -24,8 +31,8 @@ export default function SignInPage() {
         {/* Form Section */}
         <Stack direction="column" sx={{ width: "50vw", alignItems: "center" }}>
           <SigninLoginNav />
-          <h1 style={{ margin: "0 0 10px 0" }}>Sign up</h1>
-          <p>Create an account!</p>
+          <h1 style={{ margin: "0 0 10px 0" }}>Log in</h1>
+          <p>Welcome back !!</p>
 
           <form
             style={{
@@ -40,19 +47,6 @@ export default function SignInPage() {
               boxSizing: "border-box",
             }}
           >
-            <label>Username:</label>
-            <TextField
-              required
-              fullWidth
-              id="outlined-required"
-              label="Username"
-              placeholder="Jack"
-              sx={{
-                backgroundColor: "white",
-                marginBottom: "10px",
-                borderRadius: "10px",
-              }}
-            />
             <label>Email</label>
             <TextField
               required
@@ -65,6 +59,7 @@ export default function SignInPage() {
                 marginBottom: "10px",
                 borderRadius: "10px",
               }}
+              onChange={handleInputChange}
             />
             <label>Password</label>
             <TextField
@@ -78,6 +73,7 @@ export default function SignInPage() {
                 marginBottom: "10px",
                 borderRadius: "10px",
               }}
+              onChange={handleInputChange}
             />
 
             <Button

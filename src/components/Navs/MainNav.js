@@ -4,12 +4,12 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { Stack } from "@mui/material";
-import headLogo from "../images/headOnly.png";
-import headLight from "../images/headLight.png";
+import headLogo from "../../images/headOnly.png";
+import headLight from "../../images/headLight.png";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import theme from "../theme";
+import theme from "../../theme";
 import { ThemeProvider } from "@mui/material/styles";
 
 export default function MainNav({ isDarkMode }) {

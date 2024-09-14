@@ -1,4 +1,4 @@
-import FeaturesBG from "../images/FeaturesBG.png";
+import FeaturesBG from "../../images/FeaturesBG.png";
 
 function FeaturesPage() {
   return (

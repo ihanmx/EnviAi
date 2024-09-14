@@ -2,12 +2,13 @@ import Grid from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
-
 import { useContext } from "react";
-import { UserDataContext } from "../Contexts/UserDataContext";
+import { UserDataContext } from "../../Contexts/UserDataContext";
+import React from "react";
 
 export default function AccountInfoCard() {
   const { userData, setUserData } = useContext(UserDataContext);
+
   function handleInputsChange(event) {
     const { name, value } = event.target;
     setUserData({

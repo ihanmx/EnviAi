@@ -1,15 +1,17 @@
 import "./App.css";
-import Homepage from "./components/Homepage";
-import LoginPage from "./components/LogInPage";
-import SignInPage from "./components/SignInPage";
-import DesignWhithAIPage from "./components/DesignWhithAIPage";
-import ChooseProductPage from "./components/ChooseProductPage";
-import AccountPage from "./components/AccountPage";
-import CheckoutPage from "./components/CheckoutPage";
+import Homepage from "./components/HomePage/Homepage";
+import LoginPage from "./components/LoginPage/LogInPage";
+import SignInPage from "./components/SigninPage/SignInPage";
+import DesignWhithAIPage from "./components/DesignWithAIPage/DesignWhithAIPage";
+import ChooseProductPage from "./components/ChooseProductPage/ChooseProductPage";
+import AccountPage from "./components/AccountPage/AccountPage";
+import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { CartProductsContext } from "./Contexts/CartProductsContext";
 import { UserDataContext } from "./Contexts/UserDataContext";
+import { ProductTypeContext } from "./Contexts/ProductTypeContext";
+
 function App() {
   const cartProductsinitial = [
     {
@@ -64,29 +66,32 @@ function App() {
     language: "",
   });
 
+  const [productType, setProductType] = useState({ type: "" });
   return (
     <UserDataContext.Provider value={{ userData, setUserData }}>
-      <CartProductsContext.Provider value={{ CartProducts, setCartProducts }}>
-        <div>
-          {/* Routes */}
-          <Routes>
-            <Route path="/" element={<Homepage />}></Route>
-            <Route path="/Homepage" element={<Homepage />}></Route>
-            <Route path="/login" element={<LoginPage />}></Route>
-            <Route path="/signin" element={<SignInPage />}></Route>
-            <Route
-              path="/DesignWhithAI"
-              element={<DesignWhithAIPage />}
-            ></Route>
-            <Route
-              path="/ChooseProductPage"
-              element={<ChooseProductPage />}
-            ></Route>
-            <Route path="/AccountPage" element={<AccountPage />}></Route>
-            <Route path="/CheckoutPage" element={<CheckoutPage />}></Route>
-          </Routes>
-        </div>
-      </CartProductsContext.Provider>
+      <ProductTypeContext.Provider value={{ productType, setProductType }}>
+        <CartProductsContext.Provider value={{ CartProducts, setCartProducts }}>
+          <div>
+            {/* Routes */}
+            <Routes>
+              <Route path="/" element={<Homepage />}></Route>
+              <Route path="/Homepage" element={<Homepage />}></Route>
+              <Route path="/login" element={<LoginPage />}></Route>
+              <Route path="/signin" element={<SignInPage />}></Route>
+              <Route
+                path="/DesignWhithAI"
+                element={<DesignWhithAIPage />}
+              ></Route>
+              <Route
+                path="/ChooseProductPage"
+                element={<ChooseProductPage />}
+              ></Route>
+              <Route path="/AccountPage" element={<AccountPage />}></Route>
+              <Route path="/CheckoutPage" element={<CheckoutPage />}></Route>
+            </Routes>
+          </div>
+        </CartProductsContext.Provider>
+      </ProductTypeContext.Provider>
     </UserDataContext.Provider>
   );
 }

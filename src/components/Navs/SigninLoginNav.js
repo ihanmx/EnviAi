@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Divider } from "@mui/material";
+
 export default function SigninLoginNav() {
   const [value, setValue] = useState(0);
 

@@ -1,4 +1,4 @@
-import MainNav from "./MainNav";
+import MainNav from "../Navs/MainNav";
 import { Stack } from "@mui/material";
 import ProfileCard from "./ProfileCard";
 import TimeZoneCard from "./TimeZoneCard";
