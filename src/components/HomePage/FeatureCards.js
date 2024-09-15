@@ -5,23 +5,31 @@ import card2Img from "../../images/card2.png";
 import card3Img from "../../images/card3.png";
 import card4Img from "../../images/card4.png";
 import card5Img from "../../images/card5.png";
-
+import Mediaquery from "./Mediaquery";
 export default function FeatureCards() {
+  const {
+    isSmall,
+    isMedium,
+    isLarge,
+    isExtraLarge,
+    is2ExtraLarge,
+    isUltraLarge,
+  } = Mediaquery();
   return (
     <div>
       <Stack
         className="featuresCardCountainer"
-        direction="row"
+        direction={isMedium ? "column" : "row"}
         spacing={2}
         style={{
           justifyContent: "space-around",
           alignItems: "center",
           overflowX: "hidden",
-          height: "100vh",
+          margin: "10px",
         }}
       >
         <CardImg
-          height={"50vh"}
+          height={isMedium ? "60vh" : "50vh"}
           img={card1Img}
           title={"Check Proposed models"}
           button={true}
@@ -29,7 +37,7 @@ export default function FeatureCards() {
           btnText="Start designing"
         />
         <CardImg
-          height={"60vh"}
+          height={isMedium ? "60vh" : "60vh"}
           img={card2Img}
           title={`Buy eco-freindly products
           `}
@@ -37,7 +45,7 @@ export default function FeatureCards() {
           greenBg={false}
         />
         <CardImg
-          height={"80vh"}
+          height={isMedium ? "60vh" : "80vh"}
           img={card3Img}
           title={`Generate your favourite designs
           using image-generator AI
@@ -46,14 +54,14 @@ export default function FeatureCards() {
           greenBg={false}
         />
         <CardImg
-          height={"60vh"}
+          height={isMedium ? "60vh" : "60vh"}
           img={card4Img}
           title={`Buy eco-freindly products`}
           button={false}
           greenBg={false}
         />
         <CardImg
-          height={"50vh"}
+          height={isMedium ? "60vh" : "50vh"}
           img={card5Img}
           title={""}
           button={true}

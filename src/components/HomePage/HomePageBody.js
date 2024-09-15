@@ -2,7 +2,17 @@ import homeImage from "../../images/RightImg.png";
 import logoTitle from "../../images/logoTitle.png";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import Mediaquery from "./Mediaquery";
+
 function HomePageBody() {
+  const {
+    isSmall,
+    isMedium,
+    isLarge,
+    isExtraLarge,
+    is2ExtraLarge,
+    isUltraLarge,
+  } = Mediaquery();
   return (
     <div
       className="homePageFlexContainer"
@@ -13,15 +23,15 @@ function HomePageBody() {
         maxWidth: "100vw",
         paddingLeft: "10px",
         paddingRight: "10px",
+        flexDirection: isMedium ? "column" : "row",
       }}
     >
+      {/* HomeLeftDiv */}
       <div
-        className="HomeLeftDiv"
         style={{
-          height: "90vh",
-          width: "30vw",
+          height: isMedium ? "40vh" : "90vh",
+          width: isMedium ? "100vw" : "30vw",
 
-          flexGrow: "1",
           display: " flex",
           justifyContent: "center",
           alignContent: "center",
@@ -31,12 +41,19 @@ function HomePageBody() {
         <div>
           <img
             src={logoTitle}
-            style={{ objectFit: "cover", width: "50vh" }}
+            style={{
+              objectFit: "contain",
+              width: isSmall ? "200px" : "300px",
+            }}
             alt="enviAi title"
           />
         </div>
         <div>
-          <h1>Environmental AI design factory</h1>
+          {isSmall ? (
+            <h2>Environmental AI design factory</h2>
+          ) : (
+            <h1>Environmental AI design factory</h1>
+          )}
           <Button variant="contained" style={{ backgroundColor: "green" }}>
             See more
           </Button>
@@ -48,15 +65,12 @@ function HomePageBody() {
           </Link>
         </div>
       </div>
-
+      {/* HomeRightDiv */}
       <div
-        className="HomeRightDiv"
         style={{
           width: "70vw",
-          height: "90vh",
+          height: isMedium ? "50vh" : "90vh",
           padding: "10px",
-
-          flexGrow: "1",
         }}
       >
         <img

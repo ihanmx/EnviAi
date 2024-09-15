@@ -3,6 +3,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Mediaquery from "./Mediaquery";
 
 export default function CardImg({
   height,
@@ -12,6 +13,15 @@ export default function CardImg({
   greenBg,
   btnText,
 }) {
+  const {
+    isSmall,
+    isMedium,
+    isLarge,
+    isExtraLarge,
+    is2ExtraLarge,
+    isUltraLarge,
+  } = Mediaquery();
+
   function checkButton() {
     if (button) {
       return (
@@ -40,7 +50,6 @@ export default function CardImg({
   return (
     <Card
       sx={{
-        width: "18vw",
         height: height,
         backgroundImage: !greenBg ? `url(${img})` : "none",
         backgroundSize: !greenBg ? "contain" : "auto",
@@ -48,6 +57,7 @@ export default function CardImg({
         backgroundRepeat: !greenBg ? "no-repeat" : "repeat",
         backgroundColor: greenBg ? "#077241" : "none",
         borderRadius: "50px",
+        width: isMedium ? "50vw" : "18vw",
       }}
     >
       <CardContent>
