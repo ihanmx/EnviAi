@@ -9,6 +9,7 @@ import TshirtType from "../../images/TshirtType.png";
 import Grid from "@mui/material/Grid2";
 import { useContext } from "react";
 import { ProductTypeContext } from "../../Contexts/ProductTypeContext";
+import { Stack } from "@mui/material";
 
 export default function ChooseProductPage() {
   const { productType, setProductType } = useContext(ProductTypeContext);
@@ -16,60 +17,68 @@ export default function ChooseProductPage() {
   function handleClick(value) {
     setProductType({ type: value });
   }
+
   return (
     <>
       <MainNav isDarkMode={false} />
-
-      <Grid container spacing={1}>
-        <Grid size={4}>
-          <ProductsCard
-            img={FoodBoxType}
-            title={"Lunch boxes"}
-            value="Lunch boxes"
-            clickEvent={handleClick}
-          />
+      <Stack
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+        }}
+      >
+        <Grid container spacing={1} justifyContent="center" alignItems="center">
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} align="center">
+            <ProductsCard
+              img={FoodBoxType}
+              title={"Lunch boxes"}
+              value="Lunch boxes"
+              clickEvent={handleClick}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} align="center">
+            <ProductsCard
+              img={BagType}
+              title={"Shopping bags"}
+              value="Shopping bags"
+              clickEvent={handleClick}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} align="center">
+            <ProductsCard
+              img={TshirtType}
+              title={"T-shirts"}
+              value="T-shirts"
+              clickEvent={handleClick}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} align="center">
+            <ProductsCard
+              img={NoteBookType}
+              title={"Recycled notebooks"}
+              value="Recycled notebooks"
+              clickEvent={handleClick}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} align="center">
+            <ProductsCard
+              img={PhoneCaseType}
+              title={"Phone cases"}
+              value="Phone cases"
+              clickEvent={handleClick}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} align="center">
+            <ProductsCard
+              img={CupsType}
+              title={"Heat preservation cup"}
+              value="Heat preservation cup"
+              clickEvent={handleClick}
+            />
+          </Grid>
         </Grid>
-        <Grid size={4}>
-          <ProductsCard
-            img={BagType}
-            title={"Shopping bags"}
-            value="Shopping bags"
-            clickEvent={handleClick}
-          />
-        </Grid>
-        <Grid size={4}>
-          <ProductsCard
-            img={TshirtType}
-            title={"T-shirts"}
-            value="T-shirts"
-            clickEvent={handleClick}
-          />
-        </Grid>
-        <Grid size={4}>
-          <ProductsCard
-            img={NoteBookType}
-            title={"Recycled notebooks"}
-            value="Recycled notebooks"
-            clickEvent={handleClick}
-          />
-        </Grid>
-        <Grid size={4}>
-          <ProductsCard
-            img={PhoneCaseType}
-            title={"Phone cases"}
-            value="Phone cases"
-            clickEvent={handleClick}
-          />
-        </Grid>
-        <Grid size={4}>
-          <ProductsCard
-            img={CupsType}
-            title={"Heat preservation cup"}
-            value="Heat preservation cup"
-            clickEvent={handleClick}
-          />
-        </Grid>
-      </Grid>
+      </Stack>
     </>
   );
 }

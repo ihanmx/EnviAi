@@ -3,9 +3,14 @@ import MainNav from "../Navs/MainNav";
 import { Stack, TextField, InputAdornment, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AIRobot from "../../images/AIRobot.png";
+import Mediaquery from "../HomePage/Mediaquery";
 
 export default function DesignWithAIPage() {
+  //userInput state
   const [userDescription, setUserDescription] = useState("");
+
+  //MediaQuery
+  const { isSmall, isMedium } = Mediaquery();
 
   function handleInput(event) {
     setUserDescription(event.target.value);
@@ -54,7 +59,7 @@ export default function DesignWithAIPage() {
         </form>
         <div
           style={{
-            height: "60vh",
+            height: isMedium ? "50vh" : "60vh",
             width: "100vw",
             display: "flex",
             justifyContent: "center",

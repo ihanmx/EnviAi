@@ -11,6 +11,7 @@ import { useState } from "react";
 import { CartProductsContext } from "./Contexts/CartProductsContext";
 import { UserDataContext } from "./Contexts/UserDataContext";
 import { ProductTypeContext } from "./Contexts/ProductTypeContext";
+import { Auth } from "./components/Auth";
 
 function App() {
   const cartProductsinitial = [
@@ -88,6 +89,7 @@ function App() {
               ></Route>
               <Route path="/AccountPage" element={<AccountPage />}></Route>
               <Route path="/CheckoutPage" element={<CheckoutPage />}></Route>
+              <Route path="/Auth" element={<Auth />}></Route>
             </Routes>
           </div>
         </CartProductsContext.Provider>

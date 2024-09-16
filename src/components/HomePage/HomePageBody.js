@@ -31,7 +31,6 @@ function HomePageBody() {
         style={{
           height: isMedium ? "40vh" : "90vh",
           width: isMedium ? "100vw" : "30vw",
-
           display: " flex",
           justifyContent: "center",
           alignContent: "center",
