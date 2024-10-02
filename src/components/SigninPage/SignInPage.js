@@ -1,0 +1,143 @@
+import React, { useState } from "react";
+import SigninLoginNav from "../Navs/SigninLoginNav";
+import TextField from "@mui/material/TextField";
+import { Button } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import SigninPageImg from "../../images/SigninPageImg.png";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth ,db} from "../../config/firebase";  // Import Firebase auth
+import { setDoc,doc } from "firebase/firestore";
+import { UserDataContext } from "../../Contexts/UserDataContext";
+
+export default function SignInPage() {
+  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
+  const [error, setError] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();  
+
+    const { email, password } = formData;
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Account created successfully!");
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
+  };
+
+  return (
+    <>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ height: "100vh", width: "100vw" }}
+      >
+        {/* Image Section */}
+        <Stack sx={{ width: "50vw", height: "100%" }}>
+          <img
+            src={SigninPageImg}
+            alt="Sign Up"
+            style={{ objectFit: "cover", width: "100%", height: "100%" }}
+          />
+        </Stack>
+
+        {/* Form Section */}
+        <Stack direction="column" sx={{ width: "50vw", alignItems: "center" }}>
+          <SigninLoginNav />
+          <h1 style={{ margin: "0 0 10px 0" }}>Sign up</h1>
+          <p>Create an account!</p>
+
+          <form
+            onSubmit={handleSignUp}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: "rgba(172,216,178,50%)",
+              borderTopLeftRadius: "15px",
+              borderTopRightRadius: "15px",
+              padding: "20px",
+              width: "80%",
+              boxSizing: "border-box",
+            }}
+          >
+            {/* Username */}
+            <label>Username:</label>
+            <TextField
+              required
+              fullWidth
+              name="username"
+              label="Username"
+              placeholder="Jack"
+              value={formData.username}
+              onChange={handleInputChange}
+              sx={{
+                backgroundColor: "white",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
+            />
+            {/* Email */}
+            <label>Email</label>
+            <TextField
+              required
+              fullWidth
+              name="email"
+              label="Email"
+              placeholder="example@gmail.com"
+              value={formData.email}
+              onChange={handleInputChange}
+              sx={{
+                backgroundColor: "white",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
+            />
+            {/* Password */}
+            <label>Password</label>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              placeholder="*************"
+              value={formData.password}
+              onChange={handleInputChange}
+              sx={{
+                backgroundColor: "white",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
+            />
+            {error && <p style={{ color: "red" }}>{error}</p>} {/* Display any errors */}
+
+            <Button
+              type="submit"  // Submit the form
+              variant="contained"
+              sx={{
+                width: "80%",
+                height: "50px",
+                fontSize: "16px",
+                padding: "10px 20px",
+                alignSelf: "center",
+                borderRadius: "10px",
+              }}
+            >
+              Sign Up
+            </Button>
+          </form>
+        </Stack>
+      </Stack>
+    </>
+  );
+}
