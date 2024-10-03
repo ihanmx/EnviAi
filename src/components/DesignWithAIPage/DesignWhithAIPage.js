@@ -3,7 +3,7 @@ import MainNav from "../Navs/MainNav";
 import { Stack, TextField, InputAdornment, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AIRobot from "../../images/AIRobot.png";
-import Mediaquery from "../HomePage/Mediaquery";
+import Mediaquery from "../../Mediaquery";
 
 export default function DesignWithAIPage() {
   //userInput state

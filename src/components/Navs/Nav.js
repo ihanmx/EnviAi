@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import headLogo from "../../images/headOnly.png";
 import Box from "@mui/material/Box";
-import Mediaquery from "../HomePage/Mediaquery";
+import Mediaquery from "../../Mediaquery";
 
 function Nav() {
   //media query

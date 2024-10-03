@@ -34,7 +34,7 @@ export default function CheckoutProductsList() {
     <Stack
       direction="column"
       spacing={2}
-      sx={{ height: "80vh", width: "60vw", overflow: "auto" }}
+      sx={{ height: "100%", width: "100%", overflow: "auto" }}
     >
       {cartProductsList}
     </Stack>

@@ -3,18 +3,22 @@ import { Stack } from "@mui/material";
 import ProfileCard from "./ProfileCard";
 import TimeZoneCard from "./TimeZoneCard";
 import AccountInfoCard from "./AccountInfoCard";
+import Mediaquery from "../../Mediaquery";
+
 export default function AccountPage() {
+  const { isMedium } = Mediaquery();
   return (
     <>
       <MainNav isDarkMode={false} />
       {/* page container */}
       <Stack
-        direction="row"
+        direction={isMedium ? "column" : "row"}
         spacing={2}
         sx={{
           padding: "30px",
-          height: "85vh",
+          height: isMedium ? "auto" : "85vh",
           maxWidth: "100vw",
+          justifyContent: "center",
         }}
       >
         {/* Profile and timezone container*/}

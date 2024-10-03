@@ -5,8 +5,9 @@ import { Button } from "@mui/material";
 import { useContext } from "react";
 import { UserDataContext } from "../../Contexts/UserDataContext";
 import React from "react";
-
+import Mediaquery from "../../Mediaquery";
 export default function AccountInfoCard() {
+  const { isMedium } = Mediaquery();
   const { userData, setUserData } = useContext(UserDataContext);
 
   function handleInputsChange(event) {
@@ -21,7 +22,7 @@ export default function AccountInfoCard() {
       <Stack
         sx={{
           height: "80 vh",
-          width: "70 vw",
+          width: isMedium ? "87vw" : "80vw",
           border: "0.5px solid #000",
           borderRadius: "8px",
         }}
@@ -38,7 +39,7 @@ export default function AccountInfoCard() {
               padding: "30px",
             }}
           >
-            <Grid size={6}>
+            <Grid size={isMedium ? 12 : 6}>
               <label style={{ display: "block" }}>UserName:</label>
               <TextField
                 id="outlined-required"
@@ -49,7 +50,7 @@ export default function AccountInfoCard() {
                 onChange={handleInputsChange}
               />
             </Grid>
-            <Grid size={6}>
+            <Grid size={isMedium ? 12 : 6}>
               <label style={{ display: "block" }}>Phone:</label>
               <TextField
                 id="outlined-required"
@@ -60,7 +61,7 @@ export default function AccountInfoCard() {
                 onChange={handleInputsChange}
               />
             </Grid>
-            <Grid size={6}>
+            <Grid size={isMedium ? 12 : 6}>
               <label style={{ display: "block" }}>Email:</label>
               <TextField
                 id="outlined-required"
@@ -71,7 +72,7 @@ export default function AccountInfoCard() {
                 onChange={handleInputsChange}
               />
             </Grid>
-            <Grid size={6}>
+            <Grid size={isMedium ? 12 : 6}>
               <label style={{ display: "block" }}>Shipping address:</label>
               <TextField
                 id="outlined-required"

@@ -1,5 +1,5 @@
 import FeaturesBG from "../../images/FeaturesBG.png";
-import Mediaquery from "./Mediaquery";
+import Mediaquery from "../../Mediaquery";
 function FeaturesPage() {
   const {
     isSmall,

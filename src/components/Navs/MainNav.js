@@ -17,9 +17,9 @@ import ListItem from "@mui/material/ListItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import ListItemText from "@mui/material/ListItemText";
-import Mediaquery from "../HomePage/Mediaquery";
+import Mediaquery from "../../Mediaquery";
 
-export default function MainNav(isDarkMode) {
+export default function MainNav({ isDarkMode }) {
   //media query
 
   const { isMedium } = Mediaquery();
@@ -74,7 +74,6 @@ export default function MainNav(isDarkMode) {
           />
         </Box>
 
-        {/* Tabs Section */}
         {/* Hamburger Menu for small screens */}
         {isMedium ? (
           <>
@@ -82,6 +81,7 @@ export default function MainNav(isDarkMode) {
               edge="start"
               aria-label="menu"
               onClick={toggleDrawer(true)}
+              sx={iconsStyle}
             >
               <MenuIcon />
             </IconButton>
@@ -99,7 +99,7 @@ export default function MainNav(isDarkMode) {
                   <Box>
                     <Stack direction="row" spacing={2}>
                       <Link to="/signin" style={{ textDecoration: "none" }}>
-                        <FavoriteBorderIcon style={iconsStyle} />
+                        <FavoriteBorderIcon sx={iconsStyle} />
                       </Link>
                       <Link
                         to="/CheckoutPage"
@@ -164,8 +164,8 @@ export default function MainNav(isDarkMode) {
               value={value}
               onChange={handleChange}
               centered
-              textColor="secondary"
-              indicatorColor="secondary"
+              textColor="primary"
+              indicatorColor="primary"
             >
               <Tab label="Home" component={Link} to="/homepage" />
               <Tab label="Design now" component={Link} to="/DesignWhithAI" />

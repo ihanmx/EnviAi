@@ -3,26 +3,34 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import SigninPageImg from "../../images/SigninPageImg.png";
+import Mediaquery from "../../Mediaquery";
 
 export default function SignInPage() {
+  //Mediaquery
+  const { isSmall } = Mediaquery();
   return (
     <>
       <Stack
-        direction="row"
+        direction={isSmall ? "column" : "row"}
         spacing={2}
         sx={{ height: "100vh", width: "100vw" }}
       >
         {/* Image Section */}
-        <Stack sx={{ width: "50vw", height: "100%" }}>
-          <img
-            src={SigninPageImg}
-            alt="Login"
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
-          />
-        </Stack>
+        {!isSmall && (
+          <Stack sx={{ width: "50vw", height: "100%" }}>
+            <img
+              src={SigninPageImg}
+              alt="Login"
+              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+            />
+          </Stack>
+        )}
 
         {/* Form Section */}
-        <Stack direction="column" sx={{ width: "50vw", alignItems: "center" }}>
+        <Stack
+          direction="column"
+          sx={{ width: isSmall ? "100vw" : "50vw", alignItems: "center" }}
+        >
           <SigninLoginNav />
           <h1 style={{ margin: "0 0 10px 0" }}>Sign up</h1>
           <p>Create an account!</p>
@@ -48,22 +56,25 @@ export default function SignInPage() {
               label="Username"
               placeholder="Jack"
               sx={{
-                backgroundColor: "white",
                 marginBottom: "10px",
-                borderRadius: "10px",
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                },
               }}
             />
             <label>Email</label>
             <TextField
               required
               fullWidth
-              id="outlined-required"
               label="Email"
               placeholder="example@gmail.com"
               sx={{
-                backgroundColor: "white",
                 marginBottom: "10px",
-                borderRadius: "10px",
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                },
               }}
             />
             <label>Password</label>
@@ -73,10 +84,13 @@ export default function SignInPage() {
               id="outlined-required"
               label="Password"
               placeholder="*************"
+              //MuiOutlinedInput-root is the main container
               sx={{
-                backgroundColor: "white",
                 marginBottom: "10px",
-                borderRadius: "10px",
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                },
               }}
             />
 
@@ -91,7 +105,7 @@ export default function SignInPage() {
                 borderRadius: "10px",
               }}
             >
-              Login
+              Sign up
             </Button>
           </form>
         </Stack>

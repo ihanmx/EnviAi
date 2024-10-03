@@ -9,8 +9,8 @@ const theme = createTheme({
     secondary: {
       main: "#1b5e20", // If you want to override 'secondary' too
     },
-    Light: {
-      default: "#ffffff", // White background color
+    light: {
+      main: "#ffffff", // White background color
     },
   },
   breakpoints: {
