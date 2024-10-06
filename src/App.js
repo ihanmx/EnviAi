@@ -12,7 +12,7 @@ import { CartProductsContext } from "./Contexts/CartProductsContext";
 import { UserDataContext } from "./Contexts/UserDataContext";
 import { ProductTypeContext } from "./Contexts/ProductTypeContext";
 import WishlistPage from "./components/WishlistPage/WishlistPage";
-
+//
 function App() {
   const cartProductsinitial = [
     {
