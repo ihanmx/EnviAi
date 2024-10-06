@@ -1,40 +1,73 @@
 import { Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserDataContext } from "../../Contexts/UserDataContext";
+import { db, auth } from "../../config/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const region = [
   { id: "0", value: "KSA", label: "Kingdom of Saudi Arabia" },
-  {
-    id: "1",
-    value: "US",
-    label: "united States",
-  },
+  { id: "1", value: "US", label: "United States" },
 ];
 
 const language = [
-  {
-    id: "0",
-    value: "AR",
-    label: "Arabic",
-  },
-  {
-    id: "1",
-    value: "Eng",
-    label: "English",
-  },
+  { id: "0", value: "AR", label: "Arabic" },
+  { id: "1", value: "Eng", label: "English" },
 ];
 
 export default function TimeZoneCard() {
   const { userData, setUserData } = useContext(UserDataContext);
-  function handleInputsChange(event) {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        fetchUserData(currentUser.uid);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const fetchUserData = async (uid) => {
+    try {
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setUserData(docSnap.data());
+      } else {
+        console.log("No user data found, creating new profile.");
+        setUserData({
+          region: "",
+          language: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching user data from Firestore:", error);
+    }
+  };
+
+  const handleInputsChange = async (event) => {
     const { name, value } = event.target;
-    setUserData({
+    const updatedUserData = {
       ...userData,
       [name]: value,
-    });
-  }
+    };
+
+    setUserData(updatedUserData);
+
+    if (user) {
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        await setDoc(userDocRef, updatedUserData, { merge: true });
+        console.log("User data saved successfully!");
+      } catch (error) {
+        console.error("Error saving user data to Firestore:", error);
+      }
+    }
+  };
+
   return (
     <>
       <Stack
@@ -53,7 +86,7 @@ export default function TimeZoneCard() {
             id="regionFeild"
             select
             label="Region"
-            value={userData.region}
+            value={userData.region || ""}
             helperText="Please select your country"
             fullWidth
             name="region"
@@ -69,7 +102,7 @@ export default function TimeZoneCard() {
             id="languageFeild"
             select
             label="Language"
-            value={userData.language}
+            value={userData.language || ""}
             helperText="Please select your language"
             sx={{ display: "block" }}
             fullWidth

@@ -5,15 +5,30 @@ import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { useState } from "react";
 import Mediaquery from "../../Mediaquery";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth as FirebaseAuth } from "../../config/firebase";
 
 export default function LoginPage() {
   //Mediaquery
   const { isSmall } = Mediaquery();
-  const [loginData, setloginData] = useState({ email: "", password: "" });
 
-  function handleInputChange() {
-    alert("hi");
-  }
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const signIn = async () => {
+    const { email, password } = loginData;
+    try {
+      await signInWithEmailAndPassword(FirebaseAuth, email, password);
+      alert("Login successful!");
+    } catch (err) {
+      console.error(err);
+      alert("Error during login: " + err.message);
+    }
+  };
 
   return (
     <>
@@ -54,14 +69,20 @@ export default function LoginPage() {
               width: "80%",
               boxSizing: "border-box",
             }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              signIn();
+            }}
           >
             <label>Email</label>
             <TextField
               required
               fullWidth
-              id="outlined-required"
+              name="email"
               label="Email"
               placeholder="example@gmail.com"
+              onChange={handleInputChange}
+              value={loginData.email}
               sx={{
                 marginBottom: "10px",
                 "& .MuiOutlinedInput-root": {
@@ -69,15 +90,17 @@ export default function LoginPage() {
                   borderRadius: "10px",
                 },
               }}
-              onChange={handleInputChange}
             />
             <label>Password</label>
             <TextField
               required
               fullWidth
-              id="outlined-required"
+              name="password"
               label="Password"
+              type="password"
               placeholder="*************"
+              onChange={handleInputChange}
+              value={loginData.password}
               sx={{
                 marginBottom: "10px",
                 "& .MuiOutlinedInput-root": {
@@ -85,7 +108,6 @@ export default function LoginPage() {
                   borderRadius: "10px",
                 },
               }}
-              onChange={handleInputChange}
             />
 
             <Button
@@ -98,6 +120,7 @@ export default function LoginPage() {
                 alignSelf: "center",
                 borderRadius: "10px",
               }}
+              onClick={signIn}
             >
               Login
             </Button>

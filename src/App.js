@@ -7,11 +7,14 @@ import ChooseProductPage from "./components/ChooseProductPage/ChooseProductPage"
 import AccountPage from "./components/AccountPage/AccountPage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CartProductsContext } from "./Contexts/CartProductsContext";
 import { UserDataContext } from "./Contexts/UserDataContext";
 import { ProductTypeContext } from "./Contexts/ProductTypeContext";
 import WishlistPage from "./components/WishlistPage/WishlistPage";
+import { AuthComponent } from "./components/auth";
+import { db } from "./config/firebase";
+import { getDocs, collection } from "firebase/firestore";
 //
 function App() {
   const cartProductsinitial = [
@@ -66,13 +69,36 @@ function App() {
     region: "",
     language: "",
   });
-
   const [productType, setProductType] = useState({ type: "" });
+  const [products, setProducts] = useState([]);
+
+  const productCollectionRef = collection(db, "products");
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const data = await getDocs(productCollectionRef);
+        const filteredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setProducts(filteredData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getProducts();
+  }, []);
+
   return (
     <UserDataContext.Provider value={{ userData, setUserData }}>
       <ProductTypeContext.Provider value={{ productType, setProductType }}>
         <CartProductsContext.Provider value={{ CartProducts, setCartProducts }}>
           <div>
+            <AuthComponent />
+            <input placeholder="search" type="text" />
+
             {/* Routes */}
             <Routes>
               <Route path="/" element={<Homepage />}></Route>

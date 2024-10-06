@@ -1,14 +1,43 @@
+import React, { useContext, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
-import { Stack } from "@mui/material";
-import { Button } from "@mui/material";
-import { useContext } from "react";
+import { Stack, Button } from "@mui/material";
 import { UserDataContext } from "../../Contexts/UserDataContext";
-import React from "react";
+import { auth, db } from "../../config/firebase";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import Mediaquery from "../../Mediaquery";
+
 export default function AccountInfoCard() {
   const { isMedium } = Mediaquery();
   const { userData, setUserData } = useContext(UserDataContext);
+  const userId = auth.currentUser ? auth.currentUser.uid : null;
+
+  useEffect(() => {
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
+
+  async function fetchUserData() {
+    const userDoc = doc(db, "users", userId);
+    const docSnap = await getDoc(userDoc);
+
+    if (docSnap.exists()) {
+      setUserData(docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+  }
+
+  async function handleSave(event) {
+    event.preventDefault();
+    if (userId) {
+      await setDoc(doc(db, "users", userId), userData);
+      alert("User data saved successfully!");
+    } else {
+      console.error("No user is signed in.");
+    }
+  }
 
   function handleInputsChange(event) {
     const { name, value } = event.target;
@@ -27,11 +56,7 @@ export default function AccountInfoCard() {
           borderRadius: "8px",
         }}
       >
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-          }}
-        >
+        <form onSubmit={handleSave}>
           <Grid
             container
             spacing={2}
@@ -46,7 +71,7 @@ export default function AccountInfoCard() {
                 placeholder="Jack"
                 fullWidth
                 name="name"
-                value={userData.name}
+                value={userData.name || ""}
                 onChange={handleInputsChange}
               />
             </Grid>
@@ -57,7 +82,7 @@ export default function AccountInfoCard() {
                 placeholder="+966 566 999 433"
                 fullWidth
                 name="phone"
-                value={userData.phone}
+                value={userData.phone || ""}
                 onChange={handleInputsChange}
               />
             </Grid>
@@ -68,7 +93,7 @@ export default function AccountInfoCard() {
                 placeholder="example@gmail.com"
                 fullWidth
                 name="email"
-                value={userData.email}
+                value={userData.email || ""}
                 onChange={handleInputsChange}
               />
             </Grid>
@@ -79,12 +104,14 @@ export default function AccountInfoCard() {
                 placeholder="street 5,building 401"
                 fullWidth
                 name="address"
-                value={userData.address}
+                value={userData.address || ""}
                 onChange={handleInputsChange}
               />
             </Grid>
             <Grid size={12}>
-              <Button variant="contained">Save</Button>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
             </Grid>
           </Grid>
         </form>

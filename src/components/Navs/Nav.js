@@ -19,11 +19,10 @@ function Nav() {
 
   const { isMedium } = Mediaquery();
 
-  //location functionality
+  //drawer functionality
   const location = useLocation();
   const [value, setValue] = useState(0);
-
-  // Tabs
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Dynamically set the active tab based on the current URL
   useEffect(() => {
@@ -41,8 +40,6 @@ function Nav() {
     setValue(newValue);
   };
 
-  // drawer
-  const [drawerOpen, setDrawerOpen] = useState(false);
   // Handle Drawer open/close
   const toggleDrawer = (open) => (event) => {
     setDrawerOpen(open);

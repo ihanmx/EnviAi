@@ -1,13 +1,44 @@
+import React, { useState } from "react";
 import SigninLoginNav from "../Navs/SigninLoginNav";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import SigninPageImg from "../../images/SigninPageImg.png";
 import Mediaquery from "../../Mediaquery";
-
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../config/firebase"; // Import Firebase auth
+import { setDoc, doc } from "firebase/firestore";
+import { UserDataContext } from "../../Contexts/UserDataContext";
 export default function SignInPage() {
   //Mediaquery
   const { isSmall } = Mediaquery();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    const { email, password } = formData;
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Account created successfully!");
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
+  };
   return (
     <>
       <Stack
@@ -36,6 +67,7 @@ export default function SignInPage() {
           <p>Create an account!</p>
 
           <form
+            onSubmit={handleSignUp}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -48,13 +80,16 @@ export default function SignInPage() {
               boxSizing: "border-box",
             }}
           >
+            {/* Username */}
             <label>Username:</label>
             <TextField
               required
               fullWidth
-              id="outlined-required"
+              name="username"
               label="Username"
               placeholder="Jack"
+              value={formData.username}
+              onChange={handleInputChange}
               sx={{
                 marginBottom: "10px",
                 "& .MuiOutlinedInput-root": {
@@ -63,12 +98,16 @@ export default function SignInPage() {
                 },
               }}
             />
+            {/* Email */}
             <label>Email</label>
             <TextField
               required
               fullWidth
+              name="email"
               label="Email"
               placeholder="example@gmail.com"
+              value={formData.email}
+              onChange={handleInputChange}
               sx={{
                 marginBottom: "10px",
                 "& .MuiOutlinedInput-root": {
@@ -77,13 +116,17 @@ export default function SignInPage() {
                 },
               }}
             />
+            {/* Password */}
             <label>Password</label>
             <TextField
               required
               fullWidth
-              id="outlined-required"
+              name="password"
               label="Password"
+              type="password"
               placeholder="*************"
+              value={formData.password}
+              onChange={handleInputChange}
               //MuiOutlinedInput-root is the main container
               sx={{
                 marginBottom: "10px",
@@ -93,8 +136,10 @@ export default function SignInPage() {
                 },
               }}
             />
-
+            {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+            {/* Display any errors */}
             <Button
+              type="submit" // Submit the form
               variant="contained"
               sx={{
                 width: "80%",
@@ -105,7 +150,7 @@ export default function SignInPage() {
                 borderRadius: "10px",
               }}
             >
-              Sign up
+              Sign Up
             </Button>
           </form>
         </Stack>
