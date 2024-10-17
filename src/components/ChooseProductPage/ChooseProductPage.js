@@ -10,12 +10,15 @@ import Grid from "@mui/material/Grid2";
 import { useContext } from "react";
 import { ProductTypeContext } from "../../Contexts/ProductTypeContext";
 import { Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 
 export default function ChooseProductPage() {
   const { productType, setProductType } = useContext(ProductTypeContext);
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   function handleClick(value) {
     setProductType({ type: value });
+    navigate("/DesignWhithAI", { state: { productType: value } }); // Navigate and pass the product type
   }
 
   return (

@@ -9,17 +9,16 @@ app.use(express.json()); // Parse JSON requests
 
 const PORT = process.env.PORT || 5000; // Use PORT from env, or default to 5000
 
-// Function to generate image using OpenAI API
-async function generateImage(prompt) {
-  const apiKey = process.env.OPENAI_API_KEY_1;
+// Function to generate images using OpenAI API
+async function generateImages(prompt) {
+  const apiKey = process.env.OPENAI_API_KEY_TEST; // Make sure to set your OpenAI API key
 
   const url = "https://api.openai.com/v1/images/generations";
 
   const requestBody = {
     prompt: prompt,
-    model: "dall-e-3", // Optional, defaults to 'dall-e-2'
-    n: 1, // Optional, number of images to generate (1-10)
-    quality: "standard", // Optional, use 'hd' for higher quality (only for dall-e-3)
+    model: "dall-e-2", // or "dall-e-3" if you prefer
+    n: 5, // Number of images to generate (1-10)
     response_format: "url", // Optional, can be 'url' or 'b64_json'
     size: "1024x1024", // Optional, specify size of the image
   };
@@ -32,19 +31,19 @@ async function generateImage(prompt) {
       },
     });
 
-    // Return the image URL from the response
-    return response.data.data[0].url; // Adjust based on actual response structure
+    // Return the image URLs from the response
+    return response.data.data.map((image) => image.url);
   } catch (error) {
     console.error(
-      "Error generating image:",
+      "Error generating images:",
       error.response ? error.response.data : error.message
     );
-    throw new Error("Failed to generate image");
+    throw new Error("Failed to generate images");
   }
 }
 
 // Endpoint to handle image generation requests
-app.post("/generate-image", async (req, res) => {
+app.post("/generate-images", async (req, res) => {
   const { prompt } = req.body;
 
   if (!prompt) {
@@ -52,8 +51,8 @@ app.post("/generate-image", async (req, res) => {
   }
 
   try {
-    const imageUrl = await generateImage(prompt); // Call the function to generate image
-    res.json({ imageUrl }); // Send the generated image URL back to the client
+    const imageUrls = await generateImages(prompt); // Call the function to generate images
+    res.json({ imageUrls }); // Send the generated image URLs back to the client
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
