@@ -1,5 +1,8 @@
+// react
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+
+// MUI
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Button from "@mui/material/Button";
@@ -10,8 +13,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import headLogo from "../../images/headOnly.png";
 import Box from "@mui/material/Box";
+
+// assets
+import headLogo from "../../images/headOnly.png";
+
+// MediaQuery
 import Mediaquery from "../../Mediaquery";
 
 function Nav() {
@@ -28,9 +35,9 @@ function Nav() {
   useEffect(() => {
     const pathMap = {
       "/homepage": 0,
-      "/DesignWhithAI": 1,
-      "/about": 2,
-      "/support": 3,
+      "/login": 1,
+      "/login": 2,
+      "/login": 3,
     };
     setValue(pathMap[location.pathname] || 0);
   }, [location.pathname]);
@@ -105,7 +112,7 @@ function Nav() {
                 <ListItem
                   button
                   component={Link}
-                  to="/DesignWhithAI"
+                  to="/login"
                   onClick={toggleDrawer(false)}
                 >
                   <ListItemText primary="Design now" />
@@ -113,10 +120,10 @@ function Nav() {
                 <ListItem
                   button
                   component={Link}
-                  to="/about"
+                  to="login"
                   onClick={toggleDrawer(false)}
                 >
-                  <ListItemText primary="About" />
+                  <ListItemText primary="PRE-MADE DESIGNS" />
                 </ListItem>
                 <ListItem
                   button
@@ -146,8 +153,8 @@ function Nav() {
               indicatorColor="secondary"
             >
               <Tab label="Home" component={Link} to="/homepage" />
-              <Tab label="Design now" component={Link} to="/DesignWhithAI" />
-              <Tab label="About" component={Link} to="/about" />
+              <Tab label="Design now" component={Link} to="/login" />
+              <Tab label="PRE-MADE DESIGNS" component={Link} to="/login" />
               <Tab label="Support" component={Link} to="/support" />
             </Tabs>
 

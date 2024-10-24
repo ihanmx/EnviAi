@@ -1,7 +1,11 @@
+// assets
 import homeImage from "../../images/RightImg.png";
 import logoTitle from "../../images/logoTitle.png";
+// MUI
 import { Button } from "@mui/material";
+// react
 import { Link } from "react-router-dom";
+// mediaQuery
 import Mediaquery from "../../Mediaquery";
 
 function HomePageBody() {

@@ -1,11 +1,17 @@
+// react
 import { useState, useEffect } from "react";
+// firebase
 import { auth, db } from "../../config/firebase";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"; 
-import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+// MUI
 import { Button, TextField, Stack } from "@mui/material";
 
 export default function UserProfile() {
-  const [user, setUser] = useState(null); 
+  const [user, setUser] = useState(null);
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -13,7 +19,6 @@ export default function UserProfile() {
     address: "",
   });
 
- 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -27,7 +32,6 @@ export default function UserProfile() {
     return () => unsubscribe();
   }, []);
 
- 
   const fetchUserData = async (uid) => {
     try {
       const userDoc = await getDoc(doc(db, "users", uid));
@@ -41,13 +45,11 @@ export default function UserProfile() {
     }
   };
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
 
- 
   const saveUserData = async () => {
     if (!user) return;
 
@@ -64,13 +66,15 @@ export default function UserProfile() {
     }
   };
 
-  
   const handleRegister = async () => {
     try {
-      const newUser = await createUserWithEmailAndPassword(auth, userData.email, "user-password");
+      const newUser = await createUserWithEmailAndPassword(
+        auth,
+        userData.email,
+        "user-password"
+      );
       console.log("User registered:", newUser.user.uid);
 
-     
       await setDoc(doc(db, "users", newUser.user.uid), {
         username: userData.username,
         email: userData.email,

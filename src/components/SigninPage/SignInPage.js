@@ -1,14 +1,22 @@
+// react
 import React, { useState } from "react";
+// components
 import SigninLoginNav from "../Navs/SigninLoginNav";
+// MUI
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
+// assets
 import SigninPageImg from "../../images/SigninPageImg.png";
+// mediaQuery
 import Mediaquery from "../../Mediaquery";
+// firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../config/firebase"; // Import Firebase auth
+import { auth, db } from "../../config/firebase";
 import { setDoc, doc } from "firebase/firestore";
+// contexts
 import { UserDataContext } from "../../Contexts/UserDataContext";
+
 export default function SignInPage() {
   //Mediaquery
   const { isSmall } = Mediaquery();

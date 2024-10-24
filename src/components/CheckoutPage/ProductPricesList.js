@@ -1,5 +1,7 @@
+// contexts
 import { useContext } from "react";
-import { CartProductsContext } from "../../Contexts/CartProductsContext";
+import { ProductsContext } from "../../Contexts/ProductsContext";
+// MUI
 import { Stack } from "@mui/material";
 
 function PricesContainer({ key, price }) {
@@ -11,8 +13,8 @@ function PricesContainer({ key, price }) {
 }
 
 export function ProductPricesList() {
-  const { CartProducts, setCartProducts } = useContext(CartProductsContext);
-  const PricesList = CartProducts.map((product) => {
+  const { products, setProducts } = useContext(ProductsContext);
+  const PricesList = products.map((product) => {
     return <PricesContainer key={product.productId} price={product.price} />;
   });
 
@@ -20,9 +22,9 @@ export function ProductPricesList() {
 }
 
 export function TotalPrice() {
-  const { CartProducts } = useContext(CartProductsContext);
+  const { products } = useContext(ProductsContext);
 
-  const totalPrice = CartProducts.reduce((accumulator, product) => {
+  const totalPrice = products.reduce((accumulator, product) => {
     return accumulator + parseInt(product.price, 10);
   }, 0);
 

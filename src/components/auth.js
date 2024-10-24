@@ -1,21 +1,26 @@
+// firebase
 import { auth as FirebaseAuth } from "../config/firebase";
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+// react
 import { useState } from "react";
 
 export const AuthComponent = () => {
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginData, setLoginData] = useState({ email: "", password: "" });
 
   const signIn = async () => {
     const { email, password } = loginData;
-  
+
     if (!email || !password) {
       alert("Please enter both email and password");
       return;
     }
-  
+
     try {
       await signInWithEmailAndPassword(FirebaseAuth, email, password);
       alert("Login successful!");
@@ -30,15 +35,14 @@ export const AuthComponent = () => {
       }
     }
   };
-  
- const signup = async () => {
+
+  const signup = async () => {
     try {
       await createUserWithEmailAndPassword(FirebaseAuth, email, password);
     } catch (err) {
       console.error(err);
     }
   };
-
 
   const logout = async () => {
     try {
@@ -47,6 +51,4 @@ export const AuthComponent = () => {
       console.error(err);
     }
   };
-
 };
-

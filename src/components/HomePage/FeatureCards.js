@@ -1,11 +1,17 @@
+// MUI
 import { Stack } from "@mui/material";
+
+// assets
 import CardImg from "./CardImg";
 import card1Img from "../../images/card1.png";
 import card2Img from "../../images/card2.png";
 import card3Img from "../../images/card3.png";
 import card4Img from "../../images/card4.png";
 import card5Img from "../../images/card5.png";
+
+// mediaQuery
 import Mediaquery from "../../Mediaquery";
+
 export default function FeatureCards() {
   const {
     isSmall,

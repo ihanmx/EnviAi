@@ -1,10 +1,18 @@
+// react
 import React, { useContext, useEffect } from "react";
+
+// MUI
 import Grid from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
 import { Stack, Button } from "@mui/material";
+// contexts
 import { UserDataContext } from "../../Contexts/UserDataContext";
+
+// firebase
 import { auth, db } from "../../config/firebase";
 import { setDoc, doc, getDoc } from "firebase/firestore";
+
+// MediaQuery
 import Mediaquery from "../../Mediaquery";
 
 export default function AccountInfoCard() {
@@ -50,7 +58,7 @@ export default function AccountInfoCard() {
     <>
       <Stack
         sx={{
-          height: "80 vh",
+          height: "100%",
           width: isMedium ? "87vw" : "80vw",
           border: "0.5px solid #000",
           borderRadius: "8px",

@@ -1,10 +1,17 @@
+// components
 import SigninLoginNav from "../Navs/SigninLoginNav";
+
+// assets
 import loginPageImg from "../../images/loginPageImg.png";
+// MUI
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
+// react
 import { useState } from "react";
+// mediaQuery
 import Mediaquery from "../../Mediaquery";
+// fireBase
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth as FirebaseAuth } from "../../config/firebase";
 

@@ -1,8 +1,13 @@
+// MUI
+
 import { Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+// react
 import { useContext, useEffect, useState } from "react";
+// contexts
 import { UserDataContext } from "../../Contexts/UserDataContext";
+// firebase
 import { db, auth } from "../../config/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";

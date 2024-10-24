@@ -1,11 +1,17 @@
+// MUI
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
+
+// react
 import { useState, useContext, useEffect } from "react";
+// firebase
 import { storage, db, auth } from "../../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+
+// contexts
 import { UserDataContext } from "../../Contexts/UserDataContext";
 
 export default function ProfileCard() {

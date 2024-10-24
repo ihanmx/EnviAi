@@ -1,9 +1,15 @@
+// components
 import MainNav from "../Navs/MainNav";
-import { Stack } from "@mui/material";
 import CheckoutProductsList from "./CheckoutProductsList";
 import { ProductPricesList } from "./ProductPricesList";
 import { TotalPrice } from "./ProductPricesList";
+
+// MUI
+import { Stack } from "@mui/material";
+
 import Divider from "@mui/material/Divider";
+
+// MediaQuery
 import Mediaquery from "../../Mediaquery";
 
 export default function CheckoutPage() {

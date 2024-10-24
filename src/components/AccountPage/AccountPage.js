@@ -1,11 +1,18 @@
+// react
+import React, { useEffect, useState } from "react";
+
+// components
 import MainNav from "../Navs/MainNav";
 import ProfileCard from "./ProfileCard";
 import TimeZoneCard from "./TimeZoneCard";
 import Mediaquery from "../../Mediaquery";
-import React, { useEffect, useState } from "react";
-import { Stack, Button } from "@mui/material"; // Import Button from MUI
-import AccountInfoCard from "./AccountInfoCard";
 import UserProfile from "./userProfile";
+import AccountInfoCard from "./AccountInfoCard";
+
+// MUI
+import { Stack, Button } from "@mui/material"; // Import Button from MUI
+
+// firebase
 import { auth, db } from "../../config/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth"; // Import signOut
 import { doc, getDoc } from "firebase/firestore";
@@ -69,7 +76,7 @@ export default function AccountPage() {
         <Stack
           direction="column"
           spacing={2}
-          sx={{ height: "100vh", width: "30 vw" }}
+          sx={{ height: "80vh", width: "30%" }}
         >
           {/* Profile Card */}
           <ProfileCard user={user} />
@@ -84,12 +91,13 @@ export default function AccountPage() {
             Logout
           </Button>
         </Stack>
+
         {/* User Profile Information */}
-        <Stack sx={{ width: "70%" }}>
+        <Stack sx={{ width: "70%", height: "80vh" }}>
           <UserProfile /> {/* Add UserProfile component here */}
+          {/* Account information section */}
+          <AccountInfoCard accountInfo={accountInfo} />
         </Stack>
-        {/* Account information section */}
-        <AccountInfoCard accountInfo={accountInfo} />
       </Stack>
     </>
   );
