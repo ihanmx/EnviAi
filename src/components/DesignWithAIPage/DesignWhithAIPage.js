@@ -141,7 +141,7 @@ const DesignWithAIPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/generate-images",
+        "http://localhost:4000/generate-images",
         {
           prompt: `A ${productType.type} with the '${prompt}' printed on it.`,
         }
