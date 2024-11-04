@@ -16,7 +16,7 @@ export default function PreMadeDesignsPage() {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          width: "100vw",
+          minWidthwidth: "100vw",
           backgroundColor: theme.palette.primary.main,
         }}
       >

@@ -6,17 +6,38 @@ import { useContext, useEffect } from "react";
 import { ProductsContext } from "../../Contexts/ProductsContext";
 // components
 import ProductContainer from "./ProductContainer";
+//firebase
+import { db } from "../../config/firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 export default function CheckoutProductsList() {
   const { products, setProducts } = useContext(ProductsContext);
 
+  const productsCollectionRef = collection(db, "products");
+
   useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProducts = JSON.parse(localStorage.getItem("products"));
-    if (savedProducts) {
-      setProducts(savedProducts);
-    }
-  }, [setProducts]);
+    const getProducts = async () => {
+      try {
+        const data = await getDocs(productsCollectionRef);
+        const productsArray = data.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsArray); // Set image URLs to the correct state
+        console.log(productsArray); // Log the array of image URLs
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    getProducts();
+  }, []);
 
   // Filter products based on items in the cart (change 'isInWishList' to 'isInCart')
   const cartProducts = products.filter((product) => {
@@ -27,7 +48,7 @@ export default function CheckoutProductsList() {
   const productsList = cartProducts.map((product) => (
     <ProductContainer
       key={product.productId}
-      id={product.productId}
+      id={product.id}
       name={product.productName}
       details={product.productDetails}
       img={product.productImg}

@@ -1,17 +1,17 @@
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'; 
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage'; 
-import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { initializeApp } from "firebase/app";
 
 // Firebase config object, replace with your actual config if needed
 const firebaseConfig = {
-  apiKey: "AIzaSyBoUx6duhSbMS64F-7ALQGhvgkRfGbmnLI",
-  authDomain: "enviai1.firebaseapp.com",
-  projectId: "enviai1",
-  storageBucket: "enviai1.appspot.com",
-  messagingSenderId: "427828144336",
-  appId: "1:427828144336:web:71f0a492b6909ee6f716d5",
-  measurementId: "G-LW2WN6P8JF"
+  apiKey: "AIzaSyCX3JI8qauSeuML3nALCNja7TmjRudxQso",
+  authDomain: "enviai-d0e15.firebaseapp.com",
+  projectId: "enviai-d0e15",
+  storageBucket: "enviai-d0e15.firebasestorage.app",
+  messagingSenderId: "1029651985672",
+  appId: "1:1029651985672:web:176a592c4ab80c33f5e8bd",
+  measurementId: "G-F3EGJ5Y1GY",
 };
 
 // Initialize Firebase App

@@ -13,16 +13,37 @@ import { ProductsContext } from "../../Contexts/ProductsContext";
 // react
 import { useContext, useEffect } from "react";
 
+//firebase
+import { db } from "../../config/firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 export default function WishlistPage() {
   const { products, setProducts } = useContext(ProductsContext);
 
+  const productsCollectionRef = collection(db, "products");
+
   useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProducts = JSON.parse(localStorage.getItem("products"));
-    if (savedProducts) {
-      setProducts(savedProducts);
-    }
-  }, [setProducts]);
+    const getProducts = async () => {
+      try {
+        const data = await getDocs(productsCollectionRef);
+        const productsArray = data.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsArray); // Set image URLs to the correct state
+        console.log(productsArray); // Log the array of image URLs
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    getProducts();
+  }, []);
 
   const wishListProducts = products.filter((product) => {
     return product.isInWishList;
@@ -31,7 +52,7 @@ export default function WishlistPage() {
   const listItems = wishListProducts.map((product) => {
     return (
       <WishlistItem
-        id={product.productId}
+        id={product.id}
         img={product.productImg}
         title={product.productName}
         details={product.productDetails}

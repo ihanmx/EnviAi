@@ -9,55 +9,92 @@ import { useContext, useEffect } from "react";
 import { ProductsContext } from "../../Contexts/ProductsContext";
 import { useToast } from "../../Contexts/ToastProvider";
 
+//firebase
+import { db } from "../../config/firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+
 export default function WishlistItem({ img, title, details, id, isInCart }) {
-  useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProducts = JSON.parse(localStorage.getItem("products"));
-
-    if (savedProducts) {
-      setProducts(savedProducts);
-    }
-    console.log(products);
-  }, []);
-
   const { products, setProducts } = useContext(ProductsContext);
   const { showHideToast } = useToast();
+  const productsCollectionRef = collection(db, "products");
 
-  function handleAddToCart(productId) {
-    console.log("added to Cart" + productId);
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const data = await getDocs(productsCollectionRef);
+        const productsArray = data.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsArray); // Set image URLs to the correct state
+        console.log(productsArray); // Log the array of image URLs
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    getProducts();
+  }, []);
+  const handleAddToCart = async (firebaseId) => {
+    console.log("Toggling cart for product ID:", firebaseId);
+
+    // Update local state
+
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
-        const updatedProduct = { ...product, isInCart: !product.isInCart };
+      if (product.id === firebaseId) {
+        return { ...product, isInCart: !product.isInCart };
+      }
+      return product;
+    });
+    setProducts(updatedProducts);
+    // Update Firestore
+    try {
+      const productsDocRef = doc(db, "products", firebaseId);
 
-        if (updatedProduct.isInCart) {
-          showHideToast("Product added to the cart successfully");
-        } else {
-          showHideToast("Product removed from the cart successfully");
-        }
+      await updateDoc(productsDocRef, {
+        isInCart: updatedProducts.find((p) => p.id === firebaseId).isInCart,
+      });
 
-        return updatedProduct;
-      } else return product;
+      showHideToast("Cart updated successfully!");
+    } catch (error) {
+      console.error("Error updating cart in Firestore:", error);
+    }
+  };
+
+  const handleRemoveFromWish = async (firebaseId) => {
+    console.log("Toggling wishlist for product ID:", firebaseId);
+
+    // Update local state
+
+    const updatedProducts = products.map((product) => {
+      if (product.id === firebaseId) {
+        return { ...product, isInWishList: !product.isInWishList };
+      }
+      return product;
     });
 
     setProducts(updatedProducts);
+    // Update Firestore
 
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-  }
+    try {
+      const productDocRef = doc(db, "products", firebaseId);
 
-  function handleRemoveFromWish(productId) {
-    console.log("removed to wishList" + productId);
-    const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
-        const updatedProduct = { ...product, isInWishList: false };
-        showHideToast("Product removed from the wishlist successfully");
-        return updatedProduct;
-      } else return product;
-    });
+      await updateDoc(productDocRef, {
+        isInWishList: updatedProducts.find((p) => p.id === firebaseId)
+          .isInWishList,
+      });
 
-    setProducts(updatedProducts);
-
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-  }
+      showHideToast("Wishlist updated successfully!");
+    } catch (error) {
+      console.error("Error updating wishlist in Firestore:", error);
+    }
+  };
   return (
     <>
       <Stack

@@ -16,67 +16,94 @@ import { useToast } from "../../Contexts/ToastProvider";
 // react
 import { useContext, useEffect } from "react";
 
+//firebase
+import { db } from "../../config/firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+
 export default function PreMadeProductsCardList() {
   const { products, setProducts } = useContext(ProductsContext);
   const { showHideToast } = useToast();
+  const productsCollectionRef = collection(db, "products");
 
   useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProducts = JSON.parse(localStorage.getItem("products"));
+    const getProducts = async () => {
+      try {
+        const data = await getDocs(productsCollectionRef);
+        const productsArray = data.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsArray); // Set image URLs to the correct state
+        console.log(productsArray); // Log the array of image URLs
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-    if (savedProducts) {
-      setProducts(savedProducts);
-    }
-    console.log(products);
+    getProducts();
   }, []);
 
-  function handleAddToCart(productId) {
-    console.log("added to cart" + productId);
+  const handleAddToWish = async (firebaseId) => {
+    console.log("Toggling wishlist for product ID:", firebaseId);
+
+    // Update local state
 
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
-        const updatedProduct = { ...product, isInCart: !product.isInCart };
-
-        if (updatedProduct.isInCart) {
-          showHideToast("Product added to the cart successfully");
-        } else {
-          showHideToast("Product removed from the cart successfully");
-        }
-
-        return updatedProduct;
-      } else {
-        return product;
+      if (product.id === firebaseId) {
+        return { ...product, isInWishList: !product.isInWishList };
       }
+      return product;
     });
 
     setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-  }
+    // Update Firestore
 
-  function handleAddToWish(productId) {
-    console.log("added to wishList" + productId);
+    try {
+      const productDocRef = doc(db, "products", firebaseId);
+
+      await updateDoc(productDocRef, {
+        isInWishList: updatedProducts.find((p) => p.id === firebaseId)
+          .isInWishList,
+      });
+
+      showHideToast("Wishlist updated successfully!");
+    } catch (error) {
+      console.error("Error updating wishlist in Firestore:", error);
+    }
+  };
+
+  const handleAddToCart = async (firebaseId) => {
+    console.log("Toggling cart for product ID:", firebaseId);
+
+    // Update local state
 
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
-        const updatedProduct = {
-          ...product,
-          isInWishList: !product.isInWishList,
-        };
-
-        if (updatedProduct.isInWishList) {
-          showHideToast("Product added to the wishlist successfully");
-        } else {
-          showHideToast("Product removed from the wishlist successfully");
-        }
-
-        return updatedProduct;
-      } else return product;
+      if (product.id === firebaseId) {
+        return { ...product, isInCart: !product.isInCart };
+      }
+      return product;
     });
-
     setProducts(updatedProducts);
+    // Update Firestore
+    try {
+      const productsDocRef = doc(db, "products", firebaseId);
 
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-  }
+      await updateDoc(productsDocRef, {
+        isInCart: updatedProducts.find((p) => p.id === firebaseId).isInCart,
+      });
+
+      showHideToast("Cart updated successfully!");
+    } catch (error) {
+      console.error("Error updating cart in Firestore:", error);
+    }
+  };
+
   return (
     <>
       <Grid
@@ -120,7 +147,7 @@ export default function PreMadeProductsCardList() {
                         color: product.isInWishList ? "red" : "#077241",
                       }}
                       onClick={() => {
-                        handleAddToWish(product.productId);
+                        handleAddToWish(product.id);
                       }}
                     />
                     <ShoppingCartIcon
@@ -128,7 +155,7 @@ export default function PreMadeProductsCardList() {
                         color: product.isInCart ? "red" : "#077241",
                       }}
                       onClick={() => {
-                        handleAddToCart(product.productId);
+                        handleAddToCart(product.id);
                       }}
                     />
                   </Stack>

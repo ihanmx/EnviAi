@@ -8,6 +8,15 @@ import { useContext, useEffect } from "react";
 import { useToast } from "../../Contexts/ToastProvider";
 // contexts
 import { ProductsContext } from "../../Contexts/ProductsContext";
+//firebase
+import { db } from "../../config/firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 export default function ProductContainer({
   name,
@@ -17,60 +26,82 @@ export default function ProductContainer({
   id,
   isInWishList,
 }) {
-  useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProducts = JSON.parse(localStorage.getItem("products"));
-
-    if (savedProducts) {
-      setProducts(savedProducts);
-    }
-    console.log(products);
-  }, []);
-
   const { products, setProducts } = useContext(ProductsContext);
   const { showHideToast } = useToast();
+  const productsCollectionRef = collection(db, "products");
 
-  function handleAddToWish(productId) {
-    console.log("added to wishList" + productId);
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const data = await getDocs(productsCollectionRef);
+        const productsArray = data.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsArray); // Set image URLs to the correct state
+        console.log(productsArray); // Log the array of image URLs
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    getProducts();
+  }, []);
+
+  const handleAddToWish = async (firebaseId) => {
+    console.log("Toggling wishlist for product ID:", firebaseId);
+
+    // Update local state
+
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
-        const updatedProduct = {
-          ...product,
-          isInWishList: !product.isInWishList,
-        };
-
-        if (updatedProduct.isInWishList) {
-          showHideToast("Product added to the wishlist successfully");
-        } else {
-          showHideToast("Product removed from the wishlist successfully");
-        }
-        return updatedProduct;
-      } else return product;
+      if (product.id === firebaseId) {
+        return { ...product, isInWishList: !product.isInWishList };
+      }
+      return product;
     });
 
     setProducts(updatedProducts);
+    // Update Firestore
 
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-  }
+    try {
+      const productDocRef = doc(db, "products", firebaseId);
 
-  function handleRemoveFromCart(productId) {
-    console.log("removed from cart" + productId);
+      await updateDoc(productDocRef, {
+        isInWishList: updatedProducts.find((p) => p.id === firebaseId)
+          .isInWishList,
+      });
+
+      showHideToast("Wishlist updated successfully!");
+    } catch (error) {
+      console.error("Error updating wishlist in Firestore:", error);
+    }
+  };
+
+  const handleRemoveFromCart = async (firebaseId) => {
+    console.log("Toggling cart for product ID:", firebaseId);
+
+    // Update local state
+
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
-        const updatedProduct = { ...product, isInCart: !product.isInCart };
-
-        // Check if the product is now in the cart or removed from it
-
-        showHideToast("Product removed from the cart successfully");
-
-        return updatedProduct;
-      } else return product;
+      if (product.id === firebaseId) {
+        return { ...product, isInCart: false };
+      }
+      return product;
     });
-
     setProducts(updatedProducts);
+    // Update Firestore
+    try {
+      const productsDocRef = doc(db, "products", firebaseId);
 
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-  }
+      await updateDoc(productsDocRef, {
+        isInCart: false, // No need to find again since we already know the value is false
+      });
+
+      showHideToast("Cart updated successfully!");
+    } catch (error) {
+      console.error("Error updating cart in Firestore:", error);
+    }
+  };
 
   return (
     <>
