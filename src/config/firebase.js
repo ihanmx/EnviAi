@@ -2,11 +2,13 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage'; 
 import { initializeApp } from 'firebase/app';
+import 'firebase/firestore';
 
-// Firebase config object, replace with your actual config if needed
+
 const firebaseConfig = {
   apiKey: "AIzaSyBoUx6duhSbMS64F-7ALQGhvgkRfGbmnLI",
   authDomain: "enviai1.firebaseapp.com",
+  databaseURL: "https://enviai1-default-rtdb.firebaseio.com",
   projectId: "enviai1",
   storageBucket: "enviai1.appspot.com",
   messagingSenderId: "427828144336",

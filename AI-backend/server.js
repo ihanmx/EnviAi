@@ -18,7 +18,7 @@ async function generateImages(prompt) {
   const requestBody = {
     prompt: prompt,
     model: "dall-e-2", // or "dall-e-3" if you prefer
-    n: 5, // Number of images to generate (1-10)
+    n: 1, // Number of images to generate (1-10)
     response_format: "url", // Optional, can be 'url' or 'b64_json'
     size: "1024x1024", // Optional, specify size of the image
   };

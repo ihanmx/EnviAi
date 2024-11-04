@@ -2,7 +2,7 @@
 import MainNav from "../Navs/MainNav";
 import ProductsCard from "./ProductsCard";
 
-// assets
+// Assets
 import FoodBoxType from "../../images/FoodBoxType.png";
 import BagType from "../../images/BagType.png";
 import CupsType from "../../images/CupsType.png";
@@ -15,29 +15,30 @@ import Grid from "@mui/material/Grid2";
 import { ProductTypeContext } from "../../Contexts/ProductTypeContext";
 import { Stack } from "@mui/material";
 
-// hooks
+// Hooks
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { initializeProductTypes } from "../../services/firestoreService"; // Import the function
 
 export default function ChooseProductPage() {
-  const { productType, setProductType } = useContext(ProductTypeContext);
+  const { setProductType } = useContext(ProductTypeContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProductType = JSON.parse(localStorage.getItem("productType"));
+    const fetchProductTypes = async () => {
+      try {
+        await initializeProductTypes();
+        console.log("Product types initialized successfully.");
+      } catch (error) {
+        console.error("Error initializing product types:", error);
+      }
+    };
 
-    if (savedProductType) {
-      setProductType(savedProductType);
-    }
+    fetchProductTypes();
   }, []);
-  const navigate = useNavigate(); // Initialize useNavigate hook
 
   function handleClick(value) {
     setProductType({ type: value.type, price: value.price });
-    localStorage.setItem(
-      "productType",
-      JSON.stringify({ type: value.type, price: value.price })
-    );
 
     navigate("/DesignWhithAI", {
       state: { productType: { type: value.type, price: value.price } },

@@ -1,12 +1,11 @@
 // react
-import React, { Component, useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation to access passed state
+import React, { useState, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom"; 
 
 // AI backend
-import axios from "axios"; // To handle requests to the backend
+import axios from "axios"; 
 
 // MUI
-
 import Grid from "@mui/material/Grid2";
 import { Stack } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -15,7 +14,6 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 
 // theme
-
 import theme from "../../theme";
 
 // Component
@@ -33,70 +31,56 @@ import { useToast } from "../../Contexts/ToastProvider";
 // external
 import { v4 as uuidv4 } from "uuid";
 
+// Firestore service
+import { fetchProducts, updateProduct, addProduct } from "../../services/firestoreService"; 
+
 const DesignWithAIPage = () => {
-  const location = useLocation(); // Get the location object
+  const location = useLocation(); 
   const { productType } = useContext(ProductTypeContext);
-  const [newProducts, setNewProducts] = useState([]);
+  const [newProducts, setNewProducts] = useState([]); 
   const { products, setProducts } = useContext(ProductsContext);
-  const [prompt, setPrompt] = useState(""); // To store the user input
-  const [imageUrls, setImageUrls] = useState([]); // To store the generated image URLs
-  const [loading, setLoading] = useState(false); // To show a loader when image is generating
-  const [error, setError] = useState(""); // To show any errors
+  const [prompt, setPrompt] = useState(""); 
+  const [imageUrls, setImageUrls] = useState([]); 
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(""); 
 
   const { showHideToast } = useToast();
+
   useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProducts = JSON.parse(localStorage.getItem("products"));
-    const savedNewProducts = JSON.parse(localStorage.getItem("newProducts"));
+    const loadProducts = async () => {
+      const fetchedProducts = await fetchProducts(); // Fetch products from Firestore
+      setProducts(fetchedProducts);
+    };
 
-    if (savedProducts) {
-      setProducts(savedProducts);
-    }
-    console.log(products);
-
-    if (savedNewProducts) {
-      setNewProducts(savedNewProducts);
-    }
+    loadProducts();
   }, []);
 
   // handlers
-  function handleAddToWish(productId) {
+  const handleAddToWish = async (productId) => {
     console.log("added to wishList" + productId);
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
+      if (product.id === productId) {
         return { ...product, isInWishList: !product.isInWishList };
       } else return product;
     });
 
-    const updatedNewProducts = newProducts.map((product) => {
-      if (product.productId === productId) {
-        const updatedProduct = {
-          ...product,
-          isInWishList: !product.isInWishList,
-        };
-
-        if (updatedProduct.isInWishList) {
-          showHideToast("Product added to the wishlist successfully");
-        } else {
-          showHideToast("Product removed from the wishlist successfully");
-        }
-
-        return updatedProduct;
-      } else return product;
-    });
-
     setProducts(updatedProducts);
-    setNewProducts(updatedNewProducts);
 
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    // Update Firestore
+    const productToUpdate = updatedProducts.find((product) => product.id === productId);
+    await updateProduct(productId, productToUpdate);
 
-    localStorage.setItem("newProducts", JSON.stringify(updatedNewProducts));
-  }
+    if (productToUpdate.isInWishList) {
+      showHideToast("Product added to the wishlist successfully");
+    } else {
+      showHideToast("Product removed from the wishlist successfully");
+    }
+  };
 
-  function handleAddToCart(productId) {
+  const handleAddToCart = async (productId) => {
     console.log("added to cart" + productId);
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
+      if (product.id === productId) {
         const updatedProduct = { ...product, isInCart: !product.isInCart };
 
         if (updatedProduct.isInCart) {
@@ -109,17 +93,12 @@ const DesignWithAIPage = () => {
       } else return product;
     });
 
-    const updatedNewProducts = newProducts.map((product) => {
-      if (product.productId === productId) {
-        return { ...product, isInCart: !product.isInCart };
-      } else return product;
-    });
-
     setProducts(updatedProducts);
-    setNewProducts(updatedNewProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-    localStorage.setItem("newProducts", JSON.stringify(updatedNewProducts));
-  }
+
+    // Update Firestore
+    const productToUpdate = updatedProducts.find((product) => product.id === productId);
+    await updateProduct(productId, productToUpdate);
+  };
 
   // Function to handle image generation
   const handleGenerateImages = async () => {
@@ -134,7 +113,6 @@ const DesignWithAIPage = () => {
 
     // Reset newProducts array to empty before next generation
     setNewProducts([]);
-    localStorage.setItem("newProducts", JSON.stringify([]));
 
     setLoading(true);
     setError("");
@@ -149,30 +127,26 @@ const DesignWithAIPage = () => {
 
       if (response.data.imageUrls) {
         setImageUrls(response.data.imageUrls); // Update imageUrls state
-        const generatedProducts = response.data.imageUrls.map((URL) => {
-          return {
-            productName: productType.type,
-            productDetails: prompt,
-            productImg: URL,
-            productId: uuidv4(), // Generate unique ID for each product
-            price: productType.price,
-            isInWishList: false,
-            isInCart: false,
-          };
-        });
+        const generatedProducts = response.data.imageUrls.map((URL) => ({
+          productName: productType.type,
+          productDetails: prompt,
+          productImg: URL,
+          productId: uuidv4(), // Generate unique ID for each product
+          price: productType.price,
+          isInWishList: false,
+          isInCart: false,
+        }));
 
         // Now update the products context after generating products
-        setProducts((prevProducts) => {
-          const updatedProducts = [...prevProducts, ...generatedProducts];
-          localStorage.setItem("products", JSON.stringify(updatedProducts));
-          return updatedProducts;
-        });
+        const newProductIds = await Promise.all(
+          generatedProducts.map(async (product) => {
+            const id = await addProduct(product, 'newProducts'); // Add product to Firestore under newProducts
+            return { ...product, id }; // Return the product with Firestore ID
+          })
+        );
 
-        setNewProducts((prevProducts) => {
-          const updatedProducts = [...prevProducts, ...generatedProducts];
-          localStorage.setItem("newProducts", JSON.stringify(updatedProducts));
-          return updatedProducts;
-        });
+        setProducts((prevProducts) => [...prevProducts, ...newProductIds]);
+        setNewProducts(newProductIds);
       }
     } catch (err) {
       setError("Error generating images. Please try again.");

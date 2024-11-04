@@ -1,4 +1,4 @@
-// components
+// components/WishlistPage.js
 import MainNav from "../Navs/MainNav";
 import WishlistItem from "./WishlistItem";
 // MUI
@@ -21,24 +21,24 @@ export default function WishlistPage() {
     const savedProducts = JSON.parse(localStorage.getItem("products"));
     if (savedProducts) {
       setProducts(savedProducts);
+      console.log("Loaded products from localStorage:", savedProducts); // Debugging
     }
   }, [setProducts]);
 
-  const wishListProducts = products.filter((product) => {
-    return product.isInWishList;
-  });
+  const wishListProducts = products.filter((product) => product.isInWishList);
 
-  const listItems = wishListProducts.map((product) => {
-    return (
-      <WishlistItem
-        id={product.productId}
-        img={product.productImg}
-        title={product.productName}
-        details={product.productDetails}
-        isInCart={product.isInCart}
-      />
-    );
-  });
+  console.log("Wishlist products:", wishListProducts); // Debugging
+
+  const listItems = wishListProducts.map((product) => (
+    <WishlistItem
+      key={product.productId} // Add key prop for rendering lists
+      id={product.productId}
+      img={product.productImg}
+      title={product.productName}
+      details={product.productDetails}
+      isInCart={product.isInCart}
+    />
+  ));
 
   return (
     <ThemeProvider theme={theme}>
@@ -56,7 +56,7 @@ export default function WishlistPage() {
         }}
         spacing={3}
       >
-        {listItems}
+        {listItems.length > 0 ? listItems : <p>No items in wishlist</p>}
       </Stack>
     </ThemeProvider>
   );

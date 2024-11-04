@@ -21,12 +21,8 @@ import headLogo from "../../images/headOnly.png";
 // MediaQuery
 import Mediaquery from "../../Mediaquery";
 
-function Nav() {
-  //media query
-
+function Nav({ isLoggedIn }) { // Accept isLoggedIn as a prop
   const { isMedium } = Mediaquery();
-
-  //drawer functionality
   const location = useLocation();
   const [value, setValue] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -42,7 +38,7 @@ function Nav() {
     setValue(pathMap[location.pathname] || 0);
   }, [location.pathname]);
 
-  //tabs function
+  // Handle tab change
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -53,36 +49,37 @@ function Nav() {
   };
 
   return (
-    <>
-      <Box
-        display="flex"
-        alignItems="center"
-        style={{
-          padding: "10px",
-          justifyContent: isMedium ? "space-between" : "space-around",
-        }}
-      >
-        {/* Logo Section */}
-        <Box marginRight={2}>
-          <img src={headLogo} alt="Logo" style={{ height: "50px" }} />
-        </Box>
+    <Box
+      display="flex"
+      alignItems="center"
+      style={{
+        padding: "10px",
+        justifyContent: isMedium ? "space-between" : "space-around",
+      }}
+    >
+      {/* Logo Section */}
+      <Box marginRight={2}>
+        <img src={headLogo} alt="Logo" style={{ height: "50px" }} />
+      </Box>
 
-        {/* Hamburger Menu for small screens */}
-        {isMedium ? (
-          <>
-            <IconButton
-              edge="start"
-              aria-label="menu"
-              onClick={toggleDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Drawer
-              anchor="right"
-              open={drawerOpen}
-              onClose={toggleDrawer(false)}
-            >
-              <List>
+      {/* Hamburger Menu for small screens */}
+      {isMedium ? (
+        <>
+          <IconButton
+            edge="start"
+            aria-label="menu"
+            onClick={toggleDrawer(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Drawer
+            anchor="right"
+            open={drawerOpen}
+            onClose={toggleDrawer(false)}
+          >
+            <List>
+              {/* Create account button only visible if not logged in */}
+              {!isLoggedIn && (
                 <ListItem
                   button
                   component={Link}
@@ -101,64 +98,66 @@ function Nav() {
                     Create account
                   </Button>
                 </ListItem>
-                <ListItem
-                  button
-                  component={Link}
-                  to="/homepage"
-                  onClick={toggleDrawer(false)}
-                >
-                  <ListItemText primary="Home" />
-                </ListItem>
-                <ListItem
-                  button
-                  component={Link}
-                  to="/login"
-                  onClick={toggleDrawer(false)}
-                >
-                  <ListItemText primary="Design now" />
-                </ListItem>
-                <ListItem
-                  button
-                  component={Link}
-                  to="login"
-                  onClick={toggleDrawer(false)}
-                >
-                  <ListItemText primary="PRE-MADE DESIGNS" />
-                </ListItem>
-                <ListItem
-                  button
-                  component={Link}
-                  to="/support"
-                  onClick={toggleDrawer(false)}
-                >
-                  <ListItemText primary="Support" />
-                </ListItem>
-              </List>
-              <Divider />
-            </Drawer>
-          </>
-        ) : (
-          <>
-            {/* Tabs Section for larger screens */}
-            <Tabs
-              style={{
-                display: "flex",
-                justifyItems: "center",
-                width: "60%",
-              }}
-              value={value}
-              onChange={handleChange}
-              centered
-              textColor="secondary"
-              indicatorColor="secondary"
-            >
-              <Tab label="Home" component={Link} to="/homepage" />
-              <Tab label="Design now" component={Link} to="/login" />
-              <Tab label="PRE-MADE DESIGNS" component={Link} to="/login" />
-              <Tab label="Support" component={Link} to="/support" />
-            </Tabs>
+              )}
+              <ListItem
+                button
+                component={Link}
+                to="/homepage"
+                onClick={toggleDrawer(false)}
+              >
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to="/login"
+                onClick={toggleDrawer(false)}
+              >
+                <ListItemText primary="Design now" />
+              </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to="/login"
+                onClick={toggleDrawer(false)}
+              >
+                <ListItemText primary="PRE-MADE DESIGNS" />
+              </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to="/support"
+                onClick={toggleDrawer(false)}
+              >
+                <ListItemText primary="Support" />
+              </ListItem>
+            </List>
+            <Divider />
+          </Drawer>
+        </>
+      ) : (
+        <>
+          {/* Tabs Section for larger screens */}
+          <Tabs
+            style={{
+              display: "flex",
+              justifyItems: "center",
+              width: "60%",
+            }}
+            value={value}
+            onChange={handleChange}
+            centered
+            textColor="secondary"
+            indicatorColor="secondary"
+          >
+            <Tab label="Home" component={Link} to="/homepage" />
+            <Tab label="Design now" component={Link} to="/login" />
+            <Tab label="PRE-MADE DESIGNS" component={Link} to="/login" />
+            <Tab label="Support" component={Link} to="/support" />
+          </Tabs>
 
-            {/* Create Account Button */}
+          {/* Create Account Button only visible if not logged in */}
+          {!isLoggedIn && (
             <Box>
               <Button
                 variant="outlined"
@@ -173,10 +172,10 @@ function Nav() {
                 Create account
               </Button>
             </Box>
-          </>
-        )}
-      </Box>
-    </>
+          )}
+        </>
+      )}
+    </Box>
   );
 }
 

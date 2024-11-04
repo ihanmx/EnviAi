@@ -1,6 +1,5 @@
 // components
 import SigninLoginNav from "../Navs/SigninLoginNav";
-
 // assets
 import loginPageImg from "../../images/loginPageImg.png";
 // MUI
@@ -14,10 +13,13 @@ import Mediaquery from "../../Mediaquery";
 // fireBase
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth as FirebaseAuth } from "../../config/firebase";
+// react-router
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function LoginPage() {
-  //Mediaquery
+  // Mediaquery
   const { isSmall } = Mediaquery();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const [loginData, setLoginData] = useState({ email: "", password: "" });
 
@@ -26,14 +28,15 @@ export default function LoginPage() {
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const signIn = async () => {
+  const signIn = async (e) => {
+    e.preventDefault(); // Prevent default form submission
     const { email, password } = loginData;
     try {
       await signInWithEmailAndPassword(FirebaseAuth, email, password);
-      alert("Login successful!");
+      navigate("/"); // Redirect to the home page after successful login
     } catch (err) {
       console.error(err);
-      alert("Error during login: " + err.message);
+      // Optionally handle error (e.g., set an error state)
     }
   };
 
@@ -65,6 +68,7 @@ export default function LoginPage() {
           <p>Welcome back !!</p>
 
           <form
+            onSubmit={signIn}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -75,10 +79,6 @@ export default function LoginPage() {
               padding: "20px",
               width: "80%",
               boxSizing: "border-box",
-            }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              signIn();
             }}
           >
             <label>Email</label>
@@ -118,6 +118,7 @@ export default function LoginPage() {
             />
 
             <Button
+              type="submit"
               variant="contained"
               sx={{
                 width: "80%",
@@ -127,7 +128,6 @@ export default function LoginPage() {
                 alignSelf: "center",
                 borderRadius: "10px",
               }}
-              onClick={signIn}
             >
               Login
             </Button>

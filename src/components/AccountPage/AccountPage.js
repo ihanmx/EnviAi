@@ -1,5 +1,6 @@
 // react
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 // components
 import MainNav from "../Navs/MainNav";
@@ -16,10 +17,12 @@ import { Stack, Button } from "@mui/material"; // Import Button from MUI
 import { auth, db } from "../../config/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth"; // Import signOut
 import { doc, getDoc } from "firebase/firestore";
+
 export default function AccountPage() {
   const { isMedium } = Mediaquery();
   const [user, setUser] = useState(null);
   const [accountInfo, setAccountInfo] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -52,7 +55,7 @@ export default function AccountPage() {
     try {
       await signOut(auth);
       console.log("User signed out successfully");
-      // Optionally redirect to login page or update state here
+      navigate("/homepage"); // Navigate to the homepage after logging out
     } catch (error) {
       console.error("Error signing out:", error);
     }
