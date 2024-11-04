@@ -1,40 +1,25 @@
-// MUI
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
-// contexts
-import { ProductsContext } from "../../Contexts/ProductsContext";
+import { useContext } from "react";
+import { ProductsContext } from "../../Contexts/ProductsContext"; // Import context
 import { useToast } from "../../Contexts/ToastProvider";
 
-// react
-import { useContext, useEffect } from "react";
-
 export default function PreMadeProductsCardList() {
-  const { products, setProducts } = useContext(ProductsContext);
+  const { products, setProducts } = useContext(ProductsContext); // Get products and setProducts from context
   const { showHideToast } = useToast();
 
-  useEffect(() => {
-    // Load products from localStorage when the component mounts
-    const savedProducts = JSON.parse(localStorage.getItem("products"));
-
-    if (savedProducts) {
-      setProducts(savedProducts);
-    }
-    console.log(products);
-  }, []);
-
   function handleAddToCart(productId) {
-    console.log("added to cart" + productId);
+    console.log("added to cart " + productId);
 
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
+      if (product.id === productId) {
         const updatedProduct = { ...product, isInCart: !product.isInCart };
 
         if (updatedProduct.isInCart) {
@@ -49,15 +34,14 @@ export default function PreMadeProductsCardList() {
       }
     });
 
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    setProducts(updatedProducts); // Update state
   }
 
   function handleAddToWish(productId) {
-    console.log("added to wishList" + productId);
+    console.log("added to wishlist " + productId);
 
     const updatedProducts = products.map((product) => {
-      if (product.productId === productId) {
+      if (product.id === productId) {
         const updatedProduct = {
           ...product,
           isInWishList: !product.isInWishList,
@@ -73,72 +57,68 @@ export default function PreMadeProductsCardList() {
       } else return product;
     });
 
-    setProducts(updatedProducts);
-
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    setProducts(updatedProducts); // Update state
   }
-  return (
-    <>
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {products.map((product, index) => {
-          return (
-            <Grid size={4} key={index} sx={{ maxWidth: " 26% " }}>
-              <Card key={product.productId}>
-                <img
-                  src={product.productImg}
-                  key={product.productId}
-                  alt={`Generated ${index + 1}`}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                    padding: "10px",
-                    borderRadius: "15px",
-                  }}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h4" component="div">
-                    {product.productName}
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {product.productDetails}
-                  </Typography>
-                </CardContent>
 
-                <CardActions>
-                  <Stack direction={"row"}>
-                    <FavoriteBorderIcon
-                      style={{
-                        color: product.isInWishList ? "red" : "#077241",
-                      }}
-                      onClick={() => {
-                        handleAddToWish(product.productId);
-                      }}
-                    />
-                    <ShoppingCartIcon
-                      style={{
-                        color: product.isInCart ? "red" : "#077241",
-                      }}
-                      onClick={() => {
-                        handleAddToCart(product.productId);
-                      }}
-                    />
-                  </Stack>
-                </CardActions>
-              </Card>
-              ;
-            </Grid>
-          );
-        })}
-      </Grid>
-    </>
+  return (
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {products.map((product) => {
+        return (
+          <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <Card>
+              <CardMedia
+                component="img"
+                image={product.productImg}
+                alt={`Generated ${product.productName}`}
+                sx={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  padding: "10px",
+                  borderRadius: "15px",
+                }}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h4" component="div">
+                  {product.productName}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                  {product.productDetails}
+                </Typography>
+              </CardContent>
+
+              <CardActions>
+                <Stack direction={"row"}>
+                  <FavoriteBorderIcon
+                    style={{
+                      color: product.isInWishList ? "red" : "#077241",
+                    }}
+                    onClick={() => {
+                      handleAddToWish(product.id);
+                    }}
+                  />
+                  <ShoppingCartIcon
+                    style={{
+                      color: product.isInCart ? "red" : "#077241",
+                    }}
+                    onClick={() => {
+                      handleAddToCart(product.id);
+                    }}
+                  />
+                </Stack>
+              </CardActions>
+            </Card>
+          </Grid>
+        );
+      })}
+    </Grid>
   );
 }
