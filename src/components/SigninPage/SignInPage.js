@@ -1,25 +1,26 @@
-// react
+// React
 import React, { useState } from "react";
-// components
+// Components
 import SigninLoginNav from "../Navs/SigninLoginNav";
 // MUI
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
-// assets
+// Assets
 import SigninPageImg from "../../images/SigninPageImg.png";
-// mediaQuery
+// MediaQuery
 import Mediaquery from "../../Mediaquery";
-// firebase
+// Firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../config/firebase";
 import { setDoc, doc } from "firebase/firestore";
-// contexts
-import { UserDataContext } from "../../Contexts/UserDataContext";
+// React Router
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function SignInPage() {
-  //Mediaquery
+  // MediaQuery
   const { isSmall } = Mediaquery();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -38,15 +39,24 @@ export default function SignInPage() {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    const { email, password } = formData;
+    const { email, password, username } = formData;
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert("Account created successfully!");
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        username: username,
+        email: email,
+      });
+
+      navigate("/"); // Redirect to the home page after successful signup
     } catch (err) {
       console.error(err);
-      setError(err.message);
+      setError(err.message); // Optionally handle error (e.g., set an error state)
     }
   };
+
   return (
     <>
       <Stack
@@ -59,7 +69,7 @@ export default function SignInPage() {
           <Stack sx={{ width: "50vw", height: "100%" }}>
             <img
               src={SigninPageImg}
-              alt="Login"
+              alt="Sign In"
               style={{ objectFit: "cover", width: "100%", height: "100%" }}
             />
           </Stack>
@@ -135,7 +145,6 @@ export default function SignInPage() {
               placeholder="*************"
               value={formData.password}
               onChange={handleInputChange}
-              //MuiOutlinedInput-root is the main container
               sx={{
                 marginBottom: "10px",
                 "& .MuiOutlinedInput-root": {
@@ -144,8 +153,7 @@ export default function SignInPage() {
                 },
               }}
             />
-            {error && <p style={{ color: "red" }}>{error}</p>}{" "}
-            {/* Display any errors */}
+            {error && <p style={{ color: "red" }}>{error}</p>} {/* Display any errors */}
             <Button
               type="submit" // Submit the form
               variant="contained"

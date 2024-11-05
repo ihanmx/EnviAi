@@ -1,39 +1,33 @@
-// components
-import SigninLoginNav from "../Navs/SigninLoginNav";
-
-// assets
-import loginPageImg from "../../images/loginPageImg.png";
-// MUI
-import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
-import Stack from "@mui/material/Stack";
-// react
 import { useState } from "react";
-// mediaQuery
-import Mediaquery from "../../Mediaquery";
-// fireBase
+import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth as FirebaseAuth } from "../../config/firebase";
+import SigninLoginNav from "../Navs/SigninLoginNav";
+import loginPageImg from "../../images/loginPageImg.png";
+import TextField from "@mui/material/TextField";
+import { Button, Alert } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Mediaquery from "../../Mediaquery";
 
 export default function LoginPage() {
-  //Mediaquery
   const { isSmall } = Mediaquery();
-
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [error, setError] = useState(""); // Error state
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const signIn = async () => {
+  const signIn = async (e) => {
+    e.preventDefault();
     const { email, password } = loginData;
     try {
       await signInWithEmailAndPassword(FirebaseAuth, email, password);
-      alert("Login successful!");
+      navigate("/"); // Redirect to home page
     } catch (err) {
-      console.error(err);
-      alert("Error during login: " + err.message);
+      setError("Incorrect email or password. Please try again."); // Set error message
     }
   };
 
@@ -44,7 +38,6 @@ export default function LoginPage() {
         spacing={2}
         sx={{ height: "100vh", width: "100vw" }}
       >
-        {/* Image Section */}
         {!isSmall && (
           <Stack sx={{ width: "50vw", height: "100%" }}>
             <img
@@ -55,7 +48,6 @@ export default function LoginPage() {
           </Stack>
         )}
 
-        {/* Form Section */}
         <Stack
           direction="column"
           sx={{ width: isSmall ? "100vw" : "50vw", alignItems: "center" }}
@@ -65,6 +57,7 @@ export default function LoginPage() {
           <p>Welcome back !!</p>
 
           <form
+            onSubmit={signIn}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -75,10 +68,6 @@ export default function LoginPage() {
               padding: "20px",
               width: "80%",
               boxSizing: "border-box",
-            }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              signIn();
             }}
           >
             <label>Email</label>
@@ -118,6 +107,7 @@ export default function LoginPage() {
             />
 
             <Button
+              type="submit"
               variant="contained"
               sx={{
                 width: "80%",
@@ -127,10 +117,23 @@ export default function LoginPage() {
                 alignSelf: "center",
                 borderRadius: "10px",
               }}
-              onClick={signIn}
             >
               Login
             </Button>
+
+            {/* Display error message */}
+            {error && (
+              <Alert
+                severity="error"
+                sx={{
+                  width: "80%",
+                  marginTop: "10px",
+                  alignSelf: "center",
+                }}
+              >
+                {error}
+              </Alert>
+            )}
           </form>
         </Stack>
       </Stack>
