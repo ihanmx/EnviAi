@@ -66,15 +66,6 @@ export default function MainNav({ isDarkMode }) {
     setDrawerOpen(open);
   };
 
-  // Handle Logout
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      console.log("User signed out successfully");
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -225,20 +216,7 @@ export default function MainNav({ isDarkMode }) {
                 <Link to="/AccountPage" style={{ textDecoration: "none" }}>
                   <AccountCircleIcon style={iconsStyle} />
                 </Link>
-                {/* Logout Button */}
-                <Button
-                  variant="contained"
-                  onClick={handleLogout}
-                  sx={{
-                    color: "white",
-                    backgroundColor: isDarkMode ? "red" : "green",
-                    "&:hover": {
-                      backgroundColor: isDarkMode ? "darkred" : "darkgreen",
-                    },
-                  }}
-                >
-                  Logout
-                </Button>
+               
               </Stack>
             </Box>
           </>

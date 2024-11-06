@@ -1,28 +1,22 @@
-// react
+// AccountPage.js
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-
-// components
+import { useNavigate } from "react-router-dom";
 import MainNav from "../Navs/MainNav";
 import ProfileCard from "./ProfileCard";
 import TimeZoneCard from "./TimeZoneCard";
 import Mediaquery from "../../Mediaquery";
 import UserProfile from "./userProfile";
 import AccountInfoCard from "./AccountInfoCard";
-
-// MUI
-import { Stack, Button } from "@mui/material"; // Import Button from MUI
-
-// firebase
+import { Stack, Button } from "@mui/material";
 import { auth, db } from "../../config/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth"; // Import signOut
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 export default function AccountPage() {
   const { isMedium } = Mediaquery();
   const [user, setUser] = useState(null);
   const [accountInfo, setAccountInfo] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -42,7 +36,7 @@ export default function AccountPage() {
       const docRef = doc(db, "users", uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setAccountInfo(docSnap.data());
+        setAccountInfo(docSnap.data()); // This now includes `username` as well
       } else {
         console.log("No such document!");
       }
@@ -55,7 +49,7 @@ export default function AccountPage() {
     try {
       await signOut(auth);
       console.log("User signed out successfully");
-      navigate("/homepage"); // Navigate to the homepage after logging out
+      navigate("/homepage");
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -64,7 +58,6 @@ export default function AccountPage() {
   return (
     <>
       <MainNav isDarkMode={false} />
-      {/* page container */}
       <Stack
         direction={isMedium ? "column" : "row"}
         spacing={2}
@@ -75,30 +68,21 @@ export default function AccountPage() {
           justifyContent: "center",
         }}
       >
-        {/* Profile and timezone container*/}
-        <Stack
-          direction="column"
-          spacing={2}
-          sx={{ height: "80vh", width: "30%" }}
-        >
-          {/* Profile Card */}
-          <ProfileCard user={user} />
-          {/* Timezone Card */}
+        <Stack direction="column" spacing={2} sx={{ height: "80vh", width: "30%" }}>
+          {/* Profile Card with username */}
+          <ProfileCard user={user} username={accountInfo?.username} />
           <TimeZoneCard timezone={accountInfo?.timezone} />
-          {/* Logout Button */}
           <Button
             variant="contained"
             onClick={handleLogout}
-            sx={{ width: "100%", mt: "auto" }} // Add margin-top auto to push it to the bottom
+            sx={{ width: "100%", mt: "auto" }}
           >
             Logout
           </Button>
         </Stack>
 
-        {/* User Profile Information */}
         <Stack sx={{ width: "70%", height: "80vh" }}>
-          <UserProfile /> {/* Add UserProfile component here */}
-          {/* Account information section */}
+          <UserProfile />
           <AccountInfoCard accountInfo={accountInfo} />
         </Stack>
       </Stack>

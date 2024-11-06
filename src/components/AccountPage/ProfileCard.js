@@ -1,12 +1,14 @@
+// ProfileCard.js
+
 // MUI
-import { Stack } from "@mui/material";
-import { Button } from "@mui/material";
+import { Stack, Button } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
 
 // react
-import { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+
 // firebase
-import { storage, db, auth } from "../../config/firebase";
+import { storage, db, auth } from "../../config/firebase";  // Import `db`
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
@@ -14,7 +16,7 @@ import { onAuthStateChanged } from "firebase/auth";
 // contexts
 import { UserDataContext } from "../../Contexts/UserDataContext";
 
-export default function ProfileCard() {
+export default function ProfileCard({ username }) {
   const [image, setImage] = useState("");
   const [user, setUser] = useState(null);
   const { userData, setUserData } = useContext(UserDataContext);
@@ -43,10 +45,7 @@ export default function ProfileCard() {
 
     try {
       await uploadBytes(storageRef, file);
-      console.log("File uploaded successfully!");
-
       const downloadURL = await getDownloadURL(storageRef);
-      console.log("File available at", downloadURL);
 
       await setDoc(
         doc(db, "users", user.uid),
@@ -61,37 +60,36 @@ export default function ProfileCard() {
   };
 
   return (
-    <>
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{
-          border: "0.5px solid #000",
-          borderRadius: "8px",
-          padding: "20px",
-          height: "15%",
-        }}
-      >
-        <img
-          src={userData.profilePhoto || image}
-          alt="Profile"
-          style={{ height: "100px", width: "100px", borderRadius: "50%" }}
+    <Stack
+      direction="row"
+      spacing={2}
+      sx={{
+        border: "0.5px solid #000",
+        borderRadius: "8px",
+        padding: "20px",
+        alignItems: "center",
+        height: "15%",
+      }}
+    >
+      <img
+        src={userData.profilePhoto || image || "/default-avatar.png"}
+        alt="Profile"
+        style={{ height: "100px", width: "100px", borderRadius: "50%" }}
+      />
+      <Stack direction="column" spacing={1}>
+        <h2>{username || "User"}</h2>
+        <input
+          type="file"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+          id="image-upload"
         />
-        <Stack direction="column" spacing={2}>
-          <h2>UserName</h2>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-            id="image-upload"
-          />
-          <label htmlFor="image-upload">
-            <Button variant="contained" component="span">
-              Change avatar <UploadIcon />
-            </Button>
-          </label>
-        </Stack>
+        <label htmlFor="image-upload">
+          <Button variant="contained" component="span" startIcon={<UploadIcon />}>
+            Change Avatar
+          </Button>
+        </label>
       </Stack>
-    </>
+    </Stack>
   );
 }
