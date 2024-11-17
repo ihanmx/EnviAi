@@ -1,5 +1,4 @@
 // css file
-
 import "./App.css";
 
 // components
@@ -12,6 +11,7 @@ import AccountPage from "./components/AccountPage/AccountPage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import WishlistPage from "./components/WishlistPage/WishlistPage";
 import PreMadeDesignsPage from "./components/PreMadeDesignsPage/PreMadeDesignsPage";
+import AboutPage from "./components/AboutPage/AboutPage.js";
 // react
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -135,6 +135,7 @@ function App() {
                       path="/PreMadeDesignsPage"
                       element={<PreMadeDesignsPage />}
                     ></Route>
+                    <Route path="/AboutPage" element={<AboutPage />}></Route>
                   </Routes>
                 </div>
               </CartProductsContext.Provider>

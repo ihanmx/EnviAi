@@ -14,6 +14,7 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 
 // MediaQuery
 import Mediaquery from "../../Mediaquery";
+import { CenterFocusStrong } from "@mui/icons-material";
 
 export default function AccountInfoCard() {
   const { isMedium } = Mediaquery();
@@ -59,7 +60,7 @@ export default function AccountInfoCard() {
       <Stack
         sx={{
           height: "100%",
-          width: isMedium ? "87vw" : "80vw",
+          width: "100%",
           border: "0.5px solid #000",
           borderRadius: "8px",
         }}

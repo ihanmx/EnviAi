@@ -1,13 +1,26 @@
+// react
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+// firebase
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth as FirebaseAuth } from "../../config/firebase";
+
+// components
 import SigninLoginNav from "../Navs/SigninLoginNav";
 import loginPageImg from "../../images/loginPageImg.png";
+
+// MUI
 import TextField from "@mui/material/TextField";
 import { Button, Alert } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+
+// media query
 import Mediaquery from "../../Mediaquery";
+
+// framer motion
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
   const { isSmall } = Mediaquery();
@@ -50,14 +63,29 @@ export default function LoginPage() {
 
         <Stack
           direction="column"
-          sx={{ width: isSmall ? "100vw" : "50vw", alignItems: "center" }}
+          sx={{
+            width: isSmall ? "100vw" : "50vw",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <SigninLoginNav />
-          <h1 style={{ margin: "0 0 10px 0" }}>Log in</h1>
-          <p>Welcome back !!</p>
+          {/* <SigninLoginNav /> */}
+          <motion.div
+            className="w-20 h-20 bg-stone-100 rounded-lg"
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            style={{ textAlign: "center" }}
+          >
+            <h1 style={{ margin: "0 0 10px 0" }}>Log in</h1>
+            <p>Welcome back !!</p>
+          </motion.div>
 
-          <form
-            onSubmit={signIn}
+          <motion.div
+            className="w-20 h-20 bg-stone-100 rounded-lg"
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -66,75 +94,98 @@ export default function LoginPage() {
               borderTopLeftRadius: "15px",
               borderTopRightRadius: "15px",
               padding: "20px",
+
               width: "80%",
               boxSizing: "border-box",
             }}
           >
-            <label>Email</label>
-            <TextField
-              required
-              fullWidth
-              name="email"
-              label="Email"
-              placeholder="example@gmail.com"
-              onChange={handleInputChange}
-              value={loginData.email}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  borderRadius: "10px",
-                },
-              }}
-            />
-            <label>Password</label>
-            <TextField
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              placeholder="*************"
-              onChange={handleInputChange}
-              value={loginData.password}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  borderRadius: "10px",
-                },
-              }}
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                width: "80%",
-                height: "50px",
-                fontSize: "16px",
-                padding: "10px 20px",
-                alignSelf: "center",
-                borderRadius: "10px",
-              }}
-            >
-              Login
-            </Button>
-
-            {/* Display error message */}
-            {error && (
-              <Alert
-                severity="error"
+            <form onSubmit={signIn}>
+              <label style={{ padding: "20px 0 20px 0" }}>Email</label>
+              <TextField
+                required
+                fullWidth
+                name="email"
+                label="Email"
+                placeholder="example@gmail.com"
+                onChange={handleInputChange}
+                value={loginData.email}
                 sx={{
-                  width: "80%",
-                  marginTop: "10px",
-                  alignSelf: "center",
+                  marginBottom: "10px",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "white",
+                    borderRadius: "10px",
+                  },
+                }}
+              />
+              <label style={{ padding: "20px 0 20px 0" }}>Password</label>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                placeholder="*************"
+                onChange={handleInputChange}
+                value={loginData.password}
+                sx={{
+                  marginBottom: "10px",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "white",
+                    borderRadius: "10px",
+                  },
+                }}
+              />
+              <p>
+                Already have an account?
+                <Link
+                  to="/signin"
+                  style={{
+                    color: "#1a73e8",
+                    textDecoration: "underline",
+                    marginLeft: "3px",
+                  }}
+                >
+                  Sign in
+                </Link>
+              </p>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center", // Centers the button horizontally
+                  width: "100%",
                 }}
               >
-                {error}
-              </Alert>
-            )}
-          </form>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    width: "80%",
+                    height: "50px",
+                    fontSize: "16px",
+                    margin: "10px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  Login
+                </Button>
+              </Box>
+
+              {/* Display error message */}
+              {error && (
+                <Alert
+                  severity="error"
+                  sx={{
+                    width: "80%",
+                    marginTop: "10px",
+                    alignSelf: "center",
+                  }}
+                >
+                  {error}
+                </Alert>
+              )}
+            </form>
+          </motion.div>
         </Stack>
       </Stack>
     </>

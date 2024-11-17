@@ -1,13 +1,19 @@
-// AccountPage.js
+// react
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import MainNav from "../Navs/MainNav";
+// Media query
+import Mediaquery from "../../Mediaquery";
+
+// components
+import AccountInfoCard from "./AccountInfoCard";
+import UserProfile from "./userProfile";
 import ProfileCard from "./ProfileCard";
 import TimeZoneCard from "./TimeZoneCard";
-import Mediaquery from "../../Mediaquery";
-import UserProfile from "./userProfile";
-import AccountInfoCard from "./AccountInfoCard";
+import MainNav from "../Navs/MainNav";
+// MUI
 import { Stack, Button } from "@mui/material";
+
+// firebase
 import { auth, db } from "../../config/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -58,6 +64,7 @@ export default function AccountPage() {
   return (
     <>
       <MainNav isDarkMode={false} />
+
       <Stack
         direction={isMedium ? "column" : "row"}
         spacing={2}
@@ -68,20 +75,24 @@ export default function AccountPage() {
           justifyContent: "center",
         }}
       >
-        <Stack direction="column" spacing={2} sx={{ height: "80vh", width: "30%" }}>
+        <Stack
+          direction="column"
+          spacing={2}
+          sx={{ height: "90%", width: isMedium ? "100%" : "30%" }}
+        >
           {/* Profile Card with username */}
           <ProfileCard user={user} username={accountInfo?.username} />
           <TimeZoneCard timezone={accountInfo?.timezone} />
           <Button
             variant="contained"
             onClick={handleLogout}
-            sx={{ width: "100%", mt: "auto" }}
+            sx={{ width: "100%", height: "auto" }}
           >
             Logout
           </Button>
         </Stack>
 
-        <Stack sx={{ width: "70%", height: "80vh" }}>
+        <Stack sx={{ width: isMedium ? "100%" : "70%", height: "90%" }}>
           <UserProfile />
           <AccountInfoCard accountInfo={accountInfo} />
         </Stack>

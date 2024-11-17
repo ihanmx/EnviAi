@@ -7,7 +7,7 @@ import { Stack } from "@mui/material";
 function PricesContainer({ key, price }) {
   return (
     <Stack direction="row" spacing={2}>
-      <h2>{price}</h2>
+      <h3>{price}</h3>
     </Stack>
   );
 }

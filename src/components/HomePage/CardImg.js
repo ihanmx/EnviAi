@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 // mediaQuery
 import Mediaquery from "../../Mediaquery";
+import { Padding } from "@mui/icons-material";
 
 export default function CardImg({
   height,
@@ -14,6 +15,7 @@ export default function CardImg({
   button,
   greenBg,
   btnText,
+  downTxt,
 }) {
   const {
     isSmall,
@@ -52,6 +54,7 @@ export default function CardImg({
   return (
     <Card
       sx={{
+        minHeight: isMedium ? "80vh" : height,
         height: height,
         backgroundImage: !greenBg ? `url(${img})` : "none",
         backgroundSize: !greenBg ? "contain" : "auto",
@@ -59,7 +62,7 @@ export default function CardImg({
         backgroundRepeat: !greenBg ? "no-repeat" : "repeat",
         backgroundColor: greenBg ? "#077241" : "none",
         borderRadius: "50px",
-        width: isMedium ? "50vw" : "18vw",
+        width: isMedium ? "80vw" : "18vw",
       }}
     >
       <CardContent>
@@ -67,8 +70,10 @@ export default function CardImg({
           gutterBottom
           component="div"
           sx={{
-            fontSize: !greenBg ? "1.5rem" : "1rem",
+            fontSize: isMedium ? "18px" : "20px",
             color: !greenBg ? "black" : "white",
+            paddingTop: "20px",
+            fontFamily: "Poppins",
           }}
         >
           {title}
@@ -77,9 +82,25 @@ export default function CardImg({
           <img
             src={img}
             alt={title}
-            style={{ width: "80%", height: "auto", marginBottom: "0" }}
+            style={{
+              width: isMedium ? "60%" : "80%",
+              height: "auto",
+              marginBottom: "0",
+            }}
           />
         )}
+        <Typography
+          gutterBottom
+          component="div"
+          sx={{
+            fontSize: isMedium ? "18px" : "20px",
+            color: !greenBg ? "black" : "white",
+
+            fontFamily: "Poppins",
+          }}
+        >
+          {downTxt}
+        </Typography>
       </CardContent>
 
       {checkButton()}

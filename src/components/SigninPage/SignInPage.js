@@ -6,6 +6,7 @@ import SigninLoginNav from "../Navs/SigninLoginNav";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 // Assets
 import SigninPageImg from "../../images/SigninPageImg.png";
 // MediaQuery
@@ -16,6 +17,10 @@ import { auth, db } from "../../config/firebase";
 import { setDoc, doc } from "firebase/firestore";
 // React Router
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link } from "react-router-dom";
+
+// framer motion
+import { motion } from "framer-motion";
 
 export default function SignInPage() {
   // MediaQuery
@@ -41,7 +46,11 @@ export default function SignInPage() {
 
     const { email, password, username } = formData;
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       // Save user data to Firestore
@@ -78,14 +87,30 @@ export default function SignInPage() {
         {/* Form Section */}
         <Stack
           direction="column"
-          sx={{ width: isSmall ? "100vw" : "50vw", alignItems: "center" }}
+          sx={{
+            width: isSmall ? "100vw" : "50vw",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <SigninLoginNav />
-          <h1 style={{ margin: "0 0 10px 0" }}>Sign up</h1>
-          <p>Create an account!</p>
+          {/* <SigninLoginNav /> */}
 
-          <form
-            onSubmit={handleSignUp}
+          <motion.div
+            className="w-20 h-20 bg-stone-100 rounded-lg"
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            style={{ textAlign: "center" }}
+          >
+            <h1 style={{ margin: "0 0 10px 0" }}>Sign up</h1>
+            <p>Create an account!</p>
+          </motion.div>
+
+          <motion.div
+            className="w-20 h-20 bg-stone-100 rounded-lg"
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -94,81 +119,106 @@ export default function SignInPage() {
               borderTopLeftRadius: "15px",
               borderTopRightRadius: "15px",
               padding: "20px",
+
               width: "80%",
               boxSizing: "border-box",
             }}
           >
-            {/* Username */}
-            <label>Username:</label>
-            <TextField
-              required
-              fullWidth
-              name="username"
-              label="Username"
-              placeholder="Jack"
-              value={formData.username}
-              onChange={handleInputChange}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  borderRadius: "10px",
-                },
-              }}
-            />
-            {/* Email */}
-            <label>Email</label>
-            <TextField
-              required
-              fullWidth
-              name="email"
-              label="Email"
-              placeholder="example@gmail.com"
-              value={formData.email}
-              onChange={handleInputChange}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  borderRadius: "10px",
-                },
-              }}
-            />
-            {/* Password */}
-            <label>Password</label>
-            <TextField
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              placeholder="*************"
-              value={formData.password}
-              onChange={handleInputChange}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  borderRadius: "10px",
-                },
-              }}
-            />
-            {error && <p style={{ color: "red" }}>{error}</p>} {/* Display any errors */}
-            <Button
-              type="submit" // Submit the form
-              variant="contained"
-              sx={{
-                width: "80%",
-                height: "50px",
-                fontSize: "16px",
-                padding: "10px 20px",
-                alignSelf: "center",
-                borderRadius: "10px",
-              }}
-            >
-              Sign Up
-            </Button>
-          </form>
+            <form onSubmit={handleSignUp}>
+              {/* Username */}
+              <label style={{ padding: "20px 0 20px 0" }}>Username:</label>
+              <TextField
+                required
+                fullWidth
+                name="username"
+                label="Username"
+                placeholder="Jack"
+                value={formData.username}
+                onChange={handleInputChange}
+                sx={{
+                  marginBottom: "10px",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "white",
+                    borderRadius: "10px",
+                  },
+                }}
+              />
+              {/* Email */}
+              <label style={{ padding: "20px 0 20px 0" }}>Email</label>
+              <TextField
+                required
+                fullWidth
+                name="email"
+                label="Email"
+                placeholder="example@gmail.com"
+                value={formData.email}
+                onChange={handleInputChange}
+                sx={{
+                  marginBottom: "10px",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "white",
+                    borderRadius: "10px",
+                  },
+                }}
+              />
+              {/* Password */}
+              <label style={{ padding: "20px 0 20px 0" }}>Password</label>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                placeholder="*************"
+                value={formData.password}
+                onChange={handleInputChange}
+                sx={{
+                  marginBottom: "10px",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "white",
+                    borderRadius: "10px",
+                  },
+                }}
+              />
+              {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+              {/* Display any errors */}
+              <p>
+                Already have an account?
+                <Link
+                  to="/login"
+                  style={{
+                    color: "#1a73e8",
+                    textDecoration: "underline",
+                    marginLeft: "3px",
+                  }}
+                >
+                  Login
+                </Link>
+              </p>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center", // Centers the button horizontally
+                  width: "100%",
+                }}
+              >
+                <Button
+                  type="submit" // Submit the form
+                  variant="contained"
+                  sx={{
+                    width: "80%",
+                    height: "50px",
+                    fontSize: "16px",
+                    margin: "10px",
+                    alignSelf: "center",
+                    borderRadius: "10px",
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Box>
+            </form>
+          </motion.div>
         </Stack>
       </Stack>
     </>

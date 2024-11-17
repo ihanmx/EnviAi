@@ -37,10 +37,10 @@ export default function FeatureCards() {
         <CardImg
           height={isMedium ? "60vh" : "50vh"}
           img={card1Img}
-          title={"Check Proposed models"}
-          button={true}
+          title={""}
+          button={false}
           greenBg={true}
-          btnText="Start designing"
+          downTxt="Personalized Designs: Create products that truly reflect your personality."
         />
         <CardImg
           height={isMedium ? "60vh" : "60vh"}
@@ -51,7 +51,7 @@ export default function FeatureCards() {
           greenBg={false}
         />
         <CardImg
-          height={isMedium ? "60vh" : "80vh"}
+          height={isMedium ? "55vh" : "75vh"}
           img={card3Img}
           title={`Generate your favourite designs
           using image-generator AI
@@ -62,7 +62,8 @@ export default function FeatureCards() {
         <CardImg
           height={isMedium ? "60vh" : "60vh"}
           img={card4Img}
-          title={`Buy eco-freindly products`}
+          title={`create stunning artwork that gets printed on your
+                  favorite items.`}
           button={false}
           greenBg={false}
         />
@@ -70,9 +71,9 @@ export default function FeatureCards() {
           height={isMedium ? "60vh" : "50vh"}
           img={card5Img}
           title={""}
-          button={true}
+          button={false}
           greenBg={true}
-          btnText="Start designing"
+          downTxt="AI-Driven Creativity: Cutting-edge technology that makes your design dreams come true."
         />
       </Stack>
     </div>

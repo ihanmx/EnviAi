@@ -20,7 +20,7 @@ function FeaturesPage() {
         backgroundPosition: " center",
         backgroundRepeat: " no-repeat ",
         width: " 100vw",
-        height: "90vh",
+        height: isMedium ? "100vh" : "90vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -28,14 +28,14 @@ function FeaturesPage() {
         padding: "0 20px 0 20px",
       }}
     >
-      {isSmall ? (
-        <h2>
+      {isMedium ? (
+        <h3 style={{ fontFamily: "Poppins", margin: "10px" }}>
           Get a unique product design {isSmall && <br />}experience with
           image-generating
           <br /> AI and support environmental protection
-        </h2>
+        </h3>
       ) : (
-        <h1>
+        <h1 style={{ fontFamily: "Poppins" }}>
           Get a unique product design experience with image-generating
           <br /> AI and support environmental protection
         </h1>

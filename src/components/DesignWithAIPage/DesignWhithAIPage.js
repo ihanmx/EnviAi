@@ -32,6 +32,10 @@ import { useToast } from "../../Contexts/ToastProvider";
 
 // external
 import { v4 as uuidv4 } from "uuid";
+
+// framer motion
+import { motion } from "framer-motion";
+
 //firebase
 import { db } from "../../config/firebase";
 import {
@@ -213,6 +217,7 @@ const DesignWithAIPage = () => {
           textAlign: "center",
           padding: "20px",
           height: "auto",
+          minHeight: "100vh",
           width: "100vw",
           backgroundColor: theme.palette.primary.main,
         }}
@@ -244,7 +249,7 @@ const DesignWithAIPage = () => {
           disabled={loading}
           style={{
             padding: "10px 20px",
-            marginBottom: "10px",
+            margin: "20px",
             backgroundColor: theme.palette.light.main,
             color: theme.palette.primary.main,
           }}
@@ -298,14 +303,22 @@ const DesignWithAIPage = () => {
           </div>
         ) : (
           <div>
-            <img
-              src={AIRobot}
-              alt="AI Robot Placeholder"
-              style={{ maxWidth: "30%" }}
-            />
-            <p style={{ color: "white" }}>
-              No images generated yet. Start by entering a description!
-            </p>
+            <motion.div
+              className="w-20 h-20 bg-stone-100 rounded-lg"
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+              style={{ textAlign: "center" }}
+            >
+              <img
+                src={AIRobot}
+                alt="AI Robot Placeholder"
+                style={{ maxWidth: "30%", marginTop: "20px" }}
+              />
+              <p style={{ color: "white" }}>
+                No images generated yet. Start by entering a description!
+              </p>
+            </motion.div>
           </div>
         )}
       </div>

@@ -21,7 +21,8 @@ import headLogo from "../../images/headOnly.png";
 // MediaQuery
 import Mediaquery from "../../Mediaquery";
 
-function Nav({ isLoggedIn }) { // Accept isLoggedIn as a prop
+function Nav({ isLoggedIn }) {
+  // Accept isLoggedIn as a prop
   const { isMedium } = Mediaquery();
   const location = useLocation();
   const [value, setValue] = useState(0);
@@ -33,7 +34,7 @@ function Nav({ isLoggedIn }) { // Accept isLoggedIn as a prop
       "/homepage": 0,
       "/login": 1,
       "/login": 2,
-      "/login": 3,
+      "/AboutPage": 3,
     };
     setValue(pathMap[location.pathname] || 0);
   }, [location.pathname]);
@@ -126,10 +127,10 @@ function Nav({ isLoggedIn }) { // Accept isLoggedIn as a prop
               <ListItem
                 button
                 component={Link}
-                to="/support"
+                to="/AboutPage"
                 onClick={toggleDrawer(false)}
               >
-                <ListItemText primary="Support" />
+                <ListItemText primary="About" />
               </ListItem>
             </List>
             <Divider />
@@ -153,7 +154,7 @@ function Nav({ isLoggedIn }) { // Accept isLoggedIn as a prop
             <Tab label="Home" component={Link} to="/homepage" />
             <Tab label="Design now" component={Link} to="/login" />
             <Tab label="PRE-MADE DESIGNS" component={Link} to="/login" />
-            <Tab label="Support" component={Link} to="/support" />
+            <Tab label="About" component={Link} to="/AboutPage" />
           </Tabs>
 
           {/* Create Account Button only visible if not logged in */}

@@ -49,7 +49,7 @@ export default function MainNav({ isDarkMode }) {
       "/homepage": 0,
       "/DesignWhithAI": 1,
       "/PreMadeDesignsPage": 2,
-      "/support": 3,
+      "/AboutPage": 3,
     };
     setValue(pathMap[location.pathname]);
   }, [location.pathname]);
@@ -65,7 +65,6 @@ export default function MainNav({ isDarkMode }) {
   const toggleDrawer = (open) => (event) => {
     setDrawerOpen(open);
   };
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -157,10 +156,10 @@ export default function MainNav({ isDarkMode }) {
                 <ListItem
                   button
                   component={Link}
-                  to="/support"
+                  to="/AboutPage"
                   onClick={toggleDrawer(false)}
                 >
-                  <ListItemText primary="Support" />
+                  <ListItemText primary="About" />
                 </ListItem>
               </List>
               <Divider />
@@ -201,7 +200,7 @@ export default function MainNav({ isDarkMode }) {
                 component={Link}
                 to="/PreMadeDesignsPage"
               />
-              <Tab label="Support" component={Link} to="/support" />
+              <Tab label="About" component={Link} to="/AboutPage" />
             </Tabs>
 
             {/* Icons section */}
@@ -216,7 +215,6 @@ export default function MainNav({ isDarkMode }) {
                 <Link to="/AccountPage" style={{ textDecoration: "none" }}>
                   <AccountCircleIcon style={iconsStyle} />
                 </Link>
-               
               </Stack>
             </Box>
           </>

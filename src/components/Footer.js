@@ -13,7 +13,10 @@ export default function Footer() {
   return (
     <footer style={{ backgroundColor: "#077241", padding: "20px" }}>
       <Stack spacing={2}>
-        <div className="logoFooter">
+        <div
+          className="logoFooter"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
           <img src={footerLogo} style={{ height: "60px" }} />
         </div>
         <div

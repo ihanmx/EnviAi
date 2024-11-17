@@ -82,7 +82,7 @@ export default function TimeZoneCard() {
           border: "0.5px solid #000",
           borderRadius: "8px",
           padding: "20px",
-          height: "60%",
+          height: "65%",
         }}
       >
         <h2>Language & TimeZone</h2>

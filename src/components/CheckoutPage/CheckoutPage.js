@@ -6,6 +6,7 @@ import { TotalPrice } from "./ProductPricesList";
 
 // MUI
 import { Stack } from "@mui/material";
+import { Button } from "@mui/material";
 
 import Divider from "@mui/material/Divider";
 
@@ -60,6 +61,9 @@ export default function CheckoutPage() {
           <ProductPricesList />
           <Divider />
           <TotalPrice />
+          <Button variant="contained" style={{ backgroundColor: "green" }}>
+            Purchase
+          </Button>
         </Stack>
       </Stack>
     </>
