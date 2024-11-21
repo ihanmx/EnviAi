@@ -84,7 +84,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={FoodBoxType}
                 title={"Lunch boxes"}
-                value={{ type: "Lunch boxes", price: "15SR" }}
+                value={{ type: "green silicone lunchbox with a divided interior", price: "15SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants} // Pass the animation variants
               />
@@ -94,7 +94,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={BagType}
                 title={"Fabric shopping bags"}
-                value={{ type: "Fabric Shopping bags", price: "30SR" }}
+                value={{ type: "white plain tote bag", price: "30SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants}
               />
@@ -104,7 +104,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={TshirtType}
                 title={"T-shirts"}
-                value={{ type: "Plain T-shirt", price: "30SR" }}
+                value={{ type: "plain green t-shirt with short sleeves and a crew neck", price: "30SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants}
               />
@@ -114,7 +114,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={NoteBookType}
                 title={"Recycled notebooks"}
-                value={{ type: "notebook", price: "10SR" }}
+                value={{ type: "brown notebook with a spiral binding", price: "10SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants}
               />
@@ -124,7 +124,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={PhoneCaseType}
                 title={"Phone cases"}
-                value={{ type: "PhoneCase", price: "10SR" }}
+                value={{ type: "black phone case for an iPhone 12", price: "10SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants}
               />
@@ -134,7 +134,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={CupsType}
                 title={"Heat preservation mugs"}
-                value={{ type: "mug", price: "30SR" }}
+                value={{ type: "black stainless steel thermos", price: "30SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants}
               />
