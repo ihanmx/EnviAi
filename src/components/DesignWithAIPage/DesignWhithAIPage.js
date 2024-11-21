@@ -18,6 +18,9 @@ import CardActions from "@mui/material/CardActions";
 
 import theme from "../../theme";
 
+//camera icon
+import cameraIcon from "../../images/camera.png";
+
 // Component
 import MainNav from "../Navs/MainNav";
 import Button from "@mui/material/Button";
@@ -56,6 +59,14 @@ const DesignWithAIPage = () => {
   const [error, setError] = useState(""); // To show any errors
   const productsCollectionRef = collection(db, "products");
   const { showHideToast } = useToast();
+  const [image, setImage] = useState(null); // State to store the uploaded image
+  const [uploadedImage, setUploadedImage] = useState(null);
+
+  /*const handleImageUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    setImage(selectedFile); // Update the image state
+    console.log("Uploaded file:", selectedFile);
+  };*/
 
   useEffect(() => {
     const getProducts = async () => {
@@ -132,82 +143,87 @@ const DesignWithAIPage = () => {
     }
   };
 
-  // Function to handle image generation
-  const handleGenerateImages = async () => {
-    if (!prompt) {
+// Function to handle image generation
+const handleGenerateImages = async () => {
+  if (!prompt) {
       setError("Prompt cannot be empty!");
       return;
-    }
-    if (!productType?.type) {
+  }
+  if (!productType?.type) {
       setError("You should choose the product type first!");
       return;
-    }
+  }
 
-    // Reset newProducts false
+  // Reset newProducts false
+  setLoading(true);
+  setError("");
 
-    setLoading(true);
-    setError("");
-
-    try {
+  try {
       const updateIsNewInFirestore = async () => {
-        const productsSnapshot = await getDocs(productsCollectionRef);
-        const updatePromises = productsSnapshot.docs.map((doc) =>
-          updateDoc(doc.ref, { isNewProduct: false })
-        );
-        await Promise.all(updatePromises);
+          const productsSnapshot = await getDocs(productsCollectionRef);
+          const updatePromises = productsSnapshot.docs.map((doc) =>
+              updateDoc(doc.ref, { isNewProduct: false })
+          );
+          await Promise.all(updatePromises);
       };
 
       await updateIsNewInFirestore();
 
       // Update local state to set isNewProduct to false for all products
       setProducts((prevProducts) =>
-        prevProducts.map((product) => ({ ...product, isNewProduct: false }))
+          prevProducts.map((product) => ({ ...product, isNewProduct: false }))
       );
 
-      const response = await axios.post(
-        "http://localhost:4000/generate-images",
-        {
-          prompt: `A ${productType.type} with the '${prompt}' printed on it.`,
-        }
-      );
-
-      if (response.data.imageUrls) {
-        setImageUrls(response.data.imageUrls); // Update imageUrls state
-        const generatedProducts = response.data.imageUrls.map((URL) => {
-          return {
-            productName: productType.type,
-            productDetails: prompt,
-            productImg: URL,
-            productId: uuidv4(), // Generate unique ID for each product
-            price: productType.price,
-            isInWishList: false,
-            isInCart: false,
-            isNewProduct: true,
-          };
-        });
-
-        const addProductsToDatabase = async () => {
-          for (let product of generatedProducts) {
-            await addDoc(productsCollectionRef, product); // Add to main products collection
-          }
-        };
-
-        await addProductsToDatabase();
-
-        // Now update the products context after generating products
-
-        setProducts((prevProducts) => {
-          const updatedProducts = [...prevProducts, ...generatedProducts];
-
-          return updatedProducts;
-        });
+      const formData = new FormData();
+      formData.append("prompt", `Create a front view of an image of ${productType.type} with a '${prompt}' image printed on it.`);
+      if (uploadedImage) {
+          formData.append("image", uploadedImage);
       }
-    } catch (err) {
+
+      const response = await axios.post("http://localhost:4000/generate-image", formData, {
+          headers: {
+              "Content-Type": "multipart/form-data",
+          },
+      });
+
+      // Check if the response contains imageUrls
+      if (response.data.imageUrls) {
+          setImageUrls(response.data.imageUrls); // Update imageUrls state
+
+          const generatedProducts = response.data.imageUrls.map((URL) => {
+              return {
+                  productName: productType.type,
+                  productDetails: prompt,
+                  productImg: URL,
+                  productId: uuidv4(), // Generate unique ID for each product
+                  price: productType.price,
+                  isInWishList: false,
+                  isInCart: false,
+                  isNewProduct: true,
+              };
+          });
+
+          const addProductsToDatabase = async () => {
+              for (let product of generatedProducts) {
+                  await addDoc(productsCollectionRef, product); // Add to main products collection
+              }
+          };
+
+          await addProductsToDatabase();
+
+          // Now update the products context after generating products
+          setProducts((prevProducts) => {
+              const updatedProducts = [...prevProducts, ...generatedProducts];
+              return updatedProducts;
+          });
+      }
+  } catch (err) {
+      console.error("Error generating images:", err); // Log the error
       setError("Error generating images. Please try again.");
-    } finally {
+  } finally {
       setLoading(false);
-    }
-  };
+  }
+};
 
   return (
     <>
@@ -225,20 +241,60 @@ const DesignWithAIPage = () => {
         <h1 style={{ color: "white" }}>
           Generate special designs using the AI !!
         </h1>
-        {/* Input field for the prompt */}
-        <input
-          type="text"
-          placeholder="Enter a description..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          style={{
-            padding: "20px",
-            width: "80%",
-            marginBottom: "10px",
-            borderRadius: "50px",
-            border: "none",
-          }}
-        />
+        <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: "20px", // Spacing below the input
+  }}
+>
+  {/* Input field for the prompt */}
+  <input
+    type="text"
+    placeholder="Enter a description..."
+    value={prompt}
+    onChange={(e) => setPrompt(e.target.value)}
+    style={{
+      padding: "20px",
+      width: "70%",
+      borderRadius: "50px",
+      border: "none",
+      outline: "none",
+    }}
+  />
+
+  {/* Upload Button with Camera Icon */}
+  <label
+    htmlFor="image-upload"
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      cursor: "pointer",
+      marginLeft: "10px",
+      padding: "10px",
+      backgroundColor: "#f0f0f0",
+      borderRadius: "50%",
+    }}
+  >
+    <img
+      src={cameraIcon} // Replace with your imported camera icon
+      alt="Camera Icon"
+      style={{
+        width: "24px",
+        height: "24px",
+      }}
+    />
+  </label>
+  <input
+    id="image-upload"
+    type="file"
+    accept="image/*"
+    onChange={(e) => setUploadedImage(e.target.files[0])} // Update state
+    style={{ display: "none" }} // Hide the input element
+  />
+</div>
+
         <br />
 
         {/* Button to generate the image */}
