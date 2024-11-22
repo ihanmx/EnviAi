@@ -22,6 +22,7 @@ import { ProductsContext } from "./Contexts/ProductsContext.js";
 import { UserDataContext } from "./Contexts/UserDataContext";
 import { ProductTypeContext } from "./Contexts/ProductTypeContext";
 import { ToastProvider } from "./Contexts/ToastProvider.js";
+import { Products1Context } from "./Contexts/Products1Context.js";
 
 // Backend
 import { AuthComponent } from "./components/auth";
@@ -56,6 +57,7 @@ function App() {
   ];
 
   const productsinitial = [];
+  const products1initial = [];
 
   const [CartProducts, setCartProducts] = useState(cartProductsinitial);
 
@@ -71,76 +73,80 @@ function App() {
 
   const [products, setProducts] = useState(productsinitial);
 
-  const productCollectionRef = collection(db, "products");
+  const [products1, setProducts1] = useState(products1initial);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await getDocs(productCollectionRef);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setProducts(filteredData);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  // const productCollectionRef = collection(db, "products");
 
-    getProducts();
-  }, []);
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const data = await getDocs(productCollectionRef);
+  //       const filteredData = data.docs.map((doc) => ({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //       }));
+  //       setProducts(filteredData);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   getProducts();
+  // }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <ToastProvider>
         <UserDataContext.Provider value={{ userData, setUserData }}>
-          <ProductsContext.Provider value={{ products, setProducts }}>
-            <ProductTypeContext.Provider
-              value={{ productType, setProductType }}
-            >
-              <CartProductsContext.Provider
-                value={{ CartProducts, setCartProducts }}
+          <Products1Context.Provider value={{ products1, setProducts1 }}>
+            <ProductsContext.Provider value={{ products, setProducts }}>
+              <ProductTypeContext.Provider
+                value={{ productType, setProductType }}
               >
-                <div>
-                  <AuthComponent />
-                  {/* <input placeholder="search" type="text" /> */}
+                <CartProductsContext.Provider
+                  value={{ CartProducts, setCartProducts }}
+                >
+                  <div>
+                    <AuthComponent />
+                    {/* <input placeholder="search" type="text" /> */}
 
-                  {/* Routes */}
-                  <Routes>
-                    <Route path="/" element={<Homepage />}></Route>
-                    <Route path="/Homepage" element={<Homepage />}></Route>
-                    <Route path="/login" element={<LoginPage />}></Route>
-                    <Route path="/signin" element={<SignInPage />}></Route>
-                    <Route
-                      path="/DesignWhithAI"
-                      element={<DesignWhithAIPage />}
-                    ></Route>
-                    <Route
-                      path="/ChooseProductPage"
-                      element={<ChooseProductPage />}
-                    ></Route>
-                    <Route
-                      path="/AccountPage"
-                      element={<AccountPage />}
-                    ></Route>
-                    <Route
-                      path="/CheckoutPage"
-                      element={<CheckoutPage />}
-                    ></Route>
-                    <Route
-                      path="/WishlistPage"
-                      element={<WishlistPage />}
-                    ></Route>
-                    <Route
-                      path="/PreMadeDesignsPage"
-                      element={<PreMadeDesignsPage />}
-                    ></Route>
-                    <Route path="/AboutPage" element={<AboutPage />}></Route>
-                  </Routes>
-                </div>
-              </CartProductsContext.Provider>
-            </ProductTypeContext.Provider>
-          </ProductsContext.Provider>
+                    {/* Routes */}
+                    <Routes>
+                      <Route path="/" element={<Homepage />}></Route>
+                      <Route path="/Homepage" element={<Homepage />}></Route>
+                      <Route path="/login" element={<LoginPage />}></Route>
+                      <Route path="/signin" element={<SignInPage />}></Route>
+                      <Route
+                        path="/DesignWhithAI"
+                        element={<DesignWhithAIPage />}
+                      ></Route>
+                      <Route
+                        path="/ChooseProductPage"
+                        element={<ChooseProductPage />}
+                      ></Route>
+                      <Route
+                        path="/AccountPage"
+                        element={<AccountPage />}
+                      ></Route>
+                      <Route
+                        path="/CheckoutPage"
+                        element={<CheckoutPage />}
+                      ></Route>
+                      <Route
+                        path="/WishlistPage"
+                        element={<WishlistPage />}
+                      ></Route>
+                      <Route
+                        path="/PreMadeDesignsPage"
+                        element={<PreMadeDesignsPage />}
+                      ></Route>
+                      <Route path="/AboutPage" element={<AboutPage />}></Route>
+                    </Routes>
+                  </div>
+                </CartProductsContext.Provider>
+              </ProductTypeContext.Provider>
+            </ProductsContext.Provider>
+          </Products1Context.Provider>
         </UserDataContext.Provider>
       </ToastProvider>
     </ThemeProvider>

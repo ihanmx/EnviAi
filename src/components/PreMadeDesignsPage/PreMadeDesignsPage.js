@@ -14,10 +14,10 @@ export default function PreMadeDesignsPage() {
       <MainNav isDarkMode={true} />
       <Stack
         style={{
-          justifyContent: "center",
           alignItems: "center",
-          minWidthwidth: "100vw",
+          minHeight: "100vw",
           backgroundColor: theme.palette.primary.main,
+          padding: "20px",
         }}
       >
         <PreMadeProductsCardList />

@@ -29,6 +29,7 @@ import AIRobot from "../../images/AIRobot.png";
 import { ProductsContext } from "../../Contexts/ProductsContext";
 import { ProductTypeContext } from "../../Contexts/ProductTypeContext";
 import { useToast } from "../../Contexts/ToastProvider";
+import { Products1Context } from "../../Contexts/Products1Context";
 
 // external
 import { v4 as uuidv4 } from "uuid";
@@ -46,58 +47,126 @@ import {
   doc,
 } from "firebase/firestore";
 
+import { auth } from "../../config/firebase";
+import { setDoc, getDoc } from "firebase/firestore";
+
 const DesignWithAIPage = () => {
   const location = useLocation(); // Get the location object
   const { productType } = useContext(ProductTypeContext);
-  const { products, setProducts } = useContext(ProductsContext);
+
   const [prompt, setPrompt] = useState(""); // To store the user input
   const [imageUrls, setImageUrls] = useState([]); // To store the generated image URLs
   const [loading, setLoading] = useState(false); // To show a loader when image is generating
   const [error, setError] = useState(""); // To show any errors
-  const productsCollectionRef = collection(db, "products");
   const { showHideToast } = useToast();
 
+  const { products, setProducts } = useContext(ProductsContext);
+  const { products1, setProducts1 } = useContext(Products1Context);
+
+  const userId = auth.currentUser ? auth.currentUser.uid : null;
+  const [user, setUser] = useState(null);
+  const productsCollectionRef = collection(db, `users/${userId}/products`);
+  const products1CollectionRef = collection(db, "products");
+
   useEffect(() => {
-    const getProducts = async () => {
+    if (!userId) {
+      console.log("user ID not provided");
+    }
+
+    async function fetchUserData() {
+      const userDoc = doc(db, "users", userId);
+      const docSnap = await getDoc(userDoc);
+
+      if (docSnap.exists()) {
+        setUser(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
+    }
+
+    const fetchProducts = async () => {
       try {
-        const data = await getDocs(productsCollectionRef);
-        const productsArray = data.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        const querySnapshot = await getDocs(productsCollectionRef);
+        const querySnapshot1 = await getDocs(products1CollectionRef);
+
+        const productsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id, // Get the document ID
+          ...doc.data(), // Get the document data
         }));
-        setProducts(productsArray); // Set image URLs to the correct state
-        console.log(productsArray); // Log the array of image URLs
-      } catch (error) {
-        console.error("Error fetching products:", error);
+
+        const products1List = querySnapshot1.docs.map((doc) => ({
+          id: doc.id, // Get the document ID
+          ...doc.data(), // Get the document data
+        }));
+
+        setProducts(productsList);
+        setProducts1(products1List);
+
+        console.log("the user products:", products);
+        console.log("the  products1:", products1);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Failed to fetch products");
+      } finally {
+        setLoading(false);
       }
     };
 
-    getProducts();
+    fetchProducts();
+  }, [userId]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        console.error("User is not authenticated");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+  useEffect(() => {
+    const setProducts1ToNotNew = async () => {
+      try {
+        const updateIsNewInFirestore = async () => {
+          const products1Snapshot = await getDocs(products1CollectionRef);
+
+          const updatePromises = products1Snapshot.docs.map((doc) =>
+            updateDoc(doc.ref, { isNewProduct: false })
+          );
+          await Promise.all(updatePromises);
+        };
+
+        await updateIsNewInFirestore();
+      } catch (error) {
+        console.error("Error updating isNewProduct in Firestore:", error);
+      }
+    };
+
+    setProducts1ToNotNew();
   }, []);
 
   // handlers
-
+  // //////////////////////Add to wish//////////////////////////////////////////////////////////
   const handleAddToWish = async (firebaseId) => {
     console.log("Toggling wishlist for product ID:", firebaseId);
 
     // Update local state
-
     const updatedProducts = products.map((product) => {
       if (product.id === firebaseId) {
         return { ...product, isInWishList: !product.isInWishList };
       }
       return product;
     });
-
     setProducts(updatedProducts);
+
     // Update Firestore
-
     try {
-      const productDocRef = doc(db, "products", firebaseId);
-
+      const productDocRef = doc(db, `users/${userId}/products`, firebaseId); // Reference to the specific document
+      const updatedProduct = updatedProducts.find((p) => p.id === firebaseId);
       await updateDoc(productDocRef, {
-        isInWishList: updatedProducts.find((p) => p.id === firebaseId)
-          .isInWishList,
+        isInWishList: updatedProduct.isInWishList,
       });
 
       showHideToast("Wishlist updated successfully!");
@@ -105,12 +174,11 @@ const DesignWithAIPage = () => {
       console.error("Error updating wishlist in Firestore:", error);
     }
   };
-
+  // /////////////////////Cart///////////////////////////
   const handleAddToCart = async (firebaseId) => {
-    console.log("Toggling cart for product ID:", firebaseId);
+    console.log("Toggling wishlist for product ID:", firebaseId);
 
     // Update local state
-
     const updatedProducts = products.map((product) => {
       if (product.id === firebaseId) {
         return { ...product, isInCart: !product.isInCart };
@@ -118,19 +186,22 @@ const DesignWithAIPage = () => {
       return product;
     });
     setProducts(updatedProducts);
+
     // Update Firestore
     try {
-      const productsDocRef = doc(db, "products", firebaseId);
-
-      await updateDoc(productsDocRef, {
-        isInCart: updatedProducts.find((p) => p.id === firebaseId).isInCart,
+      const productDocRef = doc(db, `users/${userId}/products`, firebaseId); // Reference to the specific document
+      const updatedProduct = updatedProducts.find((p) => p.id === firebaseId);
+      await updateDoc(productDocRef, {
+        isInCart: updatedProduct.isInCart,
       });
 
       showHideToast("Cart updated successfully!");
     } catch (error) {
-      console.error("Error updating cart in Firestore:", error);
+      console.error("Error updating the cart in Firestore:", error);
     }
   };
+
+  // ////////////////////////////Image generate/////////////////////////////////
 
   // Function to handle image generation
   const handleGenerateImages = async () => {
@@ -190,6 +261,10 @@ const DesignWithAIPage = () => {
           for (let product of generatedProducts) {
             await addDoc(productsCollectionRef, product); // Add to main products collection
           }
+
+          for (let product of generatedProducts) {
+            await addDoc(products1CollectionRef, product); // Add to main products collection
+          }
         };
 
         await addProductsToDatabase();
@@ -197,6 +272,12 @@ const DesignWithAIPage = () => {
         // Now update the products context after generating products
 
         setProducts((prevProducts) => {
+          const updatedProducts = [...prevProducts, ...generatedProducts];
+
+          return updatedProducts;
+        });
+
+        setProducts1((prevProducts) => {
           const updatedProducts = [...prevProducts, ...generatedProducts];
 
           return updatedProducts;
@@ -268,7 +349,10 @@ const DesignWithAIPage = () => {
               {products
                 .filter((product) => product.isNewProduct)
                 .map((product, index) => (
-                  <Grid key={product.productId} size={3}>
+                  <Grid
+                    key={product.productId}
+                    size={{ xs: 12, sm: 12, md: 6, lg: 4 }}
+                  >
                     <Card sx={{ padding: "10px" }}>
                       <img
                         src={product.productImg}
@@ -315,9 +399,9 @@ const DesignWithAIPage = () => {
                 alt="AI Robot Placeholder"
                 style={{ maxWidth: "30%", marginTop: "20px" }}
               />
-              <p style={{ color: "white" }}>
+              {/* <p style={{ color: "white" }}>
                 No images generated yet. Start by entering a description!
-              </p>
+              </p> */}
             </motion.div>
           </div>
         )}

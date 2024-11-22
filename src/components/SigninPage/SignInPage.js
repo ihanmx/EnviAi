@@ -59,6 +59,23 @@ export default function SignInPage() {
         email: email,
       });
 
+      // Create an initial document in the "products" subcollection
+      const productsSubcollectionRef = doc(
+        db,
+        `users/${user.uid}/products`,
+        "default"
+      );
+      await setDoc(productsSubcollectionRef, {
+        productName: "Sample Product", // Example product name
+        productDetails: "This is a sample product.", // Example product details
+        productImg: "https://via.placeholder.com/150", // Placeholder image URL
+        productId: "",
+        price: 0, // Example price
+        isInWishList: false, // Default value
+        isInCart: false, // Default value
+        isNewProduct: false, // Default value
+      });
+
       navigate("/"); // Redirect to the home page after successful signup
     } catch (err) {
       console.error(err);

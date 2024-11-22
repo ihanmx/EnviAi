@@ -4,11 +4,12 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ClearIcon from "@mui/icons-material/Clear";
 import Divider from "@mui/material/Divider";
 // react
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useToast } from "../../Contexts/ToastProvider";
 // contexts
 import { ProductsContext } from "../../Contexts/ProductsContext";
 //firebase
+
 import { db } from "../../config/firebase";
 import {
   collection,
@@ -18,6 +19,8 @@ import {
   doc,
 } from "firebase/firestore";
 
+import { auth } from "../../config/firebase";
+import { setDoc, getDoc } from "firebase/firestore";
 export default function ProductContainer({
   name,
   details,
@@ -28,60 +31,64 @@ export default function ProductContainer({
 }) {
   const { products, setProducts } = useContext(ProductsContext);
   const { showHideToast } = useToast();
-  const productsCollectionRef = collection(db, "products");
+  const userId = auth.currentUser ? auth.currentUser.uid : null;
+  const [user, setUser] = useState(null);
+  const productsCollectionRef = collection(db, `users/${userId}/products`);
 
   useEffect(() => {
-    const getProducts = async () => {
+    if (!userId) {
+      console.log("user ID not provided");
+    }
+
+    async function fetchUserData() {
+      const userDoc = doc(db, "users", userId);
+      const docSnap = await getDoc(userDoc);
+
+      if (docSnap.exists()) {
+        setUser(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
+    }
+
+    const fetchProducts = async () => {
       try {
-        const data = await getDocs(productsCollectionRef);
-        const productsArray = data.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        const querySnapshot = await getDocs(productsCollectionRef);
+
+        const productsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id, // Get the document ID
+          ...doc.data(), // Get the document data
         }));
-        setProducts(productsArray); // Set image URLs to the correct state
-        console.log(productsArray); // Log the array of image URLs
-      } catch (error) {
-        console.error("Error fetching products:", error);
+
+        setProducts(productsList);
+
+        console.log("the user products:", products);
+      } catch (err) {
+        console.error("Error fetching products:", err);
       }
     };
 
-    getProducts();
+    fetchProducts();
+  }, [userId]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        console.error("User is not authenticated");
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
-  const handleAddToWish = async (firebaseId) => {
+  // /////////////Remove from Cart////////////////////
+
+  const handleRemoveFromCart = async (firebaseId) => {
     console.log("Toggling wishlist for product ID:", firebaseId);
 
     // Update local state
-
-    const updatedProducts = products.map((product) => {
-      if (product.id === firebaseId) {
-        return { ...product, isInWishList: !product.isInWishList };
-      }
-      return product;
-    });
-
-    setProducts(updatedProducts);
-    // Update Firestore
-
-    try {
-      const productDocRef = doc(db, "products", firebaseId);
-
-      await updateDoc(productDocRef, {
-        isInWishList: updatedProducts.find((p) => p.id === firebaseId)
-          .isInWishList,
-      });
-
-      showHideToast("Wishlist updated successfully!");
-    } catch (error) {
-      console.error("Error updating wishlist in Firestore:", error);
-    }
-  };
-
-  const handleRemoveFromCart = async (firebaseId) => {
-    console.log("Toggling cart for product ID:", firebaseId);
-
-    // Update local state
-
     const updatedProducts = products.map((product) => {
       if (product.id === firebaseId) {
         return { ...product, isInCart: false };
@@ -89,17 +96,44 @@ export default function ProductContainer({
       return product;
     });
     setProducts(updatedProducts);
+
     // Update Firestore
     try {
-      const productsDocRef = doc(db, "products", firebaseId);
-
-      await updateDoc(productsDocRef, {
-        isInCart: false, // No need to find again since we already know the value is false
+      const productDocRef = doc(db, `users/${userId}/products`, firebaseId); // Reference to the specific document
+      const updatedProduct = updatedProducts.find((p) => p.id === firebaseId);
+      await updateDoc(productDocRef, {
+        isInCart: false,
       });
 
       showHideToast("Cart updated successfully!");
     } catch (error) {
-      console.error("Error updating cart in Firestore:", error);
+      console.error("Error updating the cart in Firestore:", error);
+    }
+  };
+
+  const handleAddToWish = async (firebaseId) => {
+    console.log("Toggling wishlist for product ID:", firebaseId);
+
+    // Update local state
+    const updatedProducts = products.map((product) => {
+      if (product.id === firebaseId) {
+        return { ...product, isInWishList: !product.isInWishList };
+      }
+      return product;
+    });
+    setProducts(updatedProducts);
+
+    // Update Firestore
+    try {
+      const productDocRef = doc(db, `users/${userId}/products`, firebaseId); // Reference to the specific document
+      const updatedProduct = updatedProducts.find((p) => p.id === firebaseId);
+      await updateDoc(productDocRef, {
+        isInWishList: updatedProduct.isInWishList,
+      });
+
+      showHideToast("Wishlist updated successfully!");
+    } catch (error) {
+      console.error("Error updating wishlist in Firestore:", error);
     }
   };
 

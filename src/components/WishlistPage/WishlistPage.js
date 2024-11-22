@@ -11,7 +11,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { ProductsContext } from "../../Contexts/ProductsContext";
 
 // react
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 //firebase
 import { db } from "../../config/firebase";
@@ -22,27 +22,62 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
+
+import { auth } from "../../config/firebase";
+import { setDoc, getDoc } from "firebase/firestore";
+
 export default function WishlistPage() {
   const { products, setProducts } = useContext(ProductsContext);
-
-  const productsCollectionRef = collection(db, "products");
+  const userId = auth.currentUser ? auth.currentUser.uid : null;
+  const [user, setUser] = useState(null);
+  const productsCollectionRef = collection(db, `users/${userId}/products`);
 
   useEffect(() => {
-    const getProducts = async () => {
+    if (!userId) {
+      console.log("user ID not provided");
+    }
+
+    async function fetchUserData() {
+      const userDoc = doc(db, "users", userId);
+      const docSnap = await getDoc(userDoc);
+
+      if (docSnap.exists()) {
+        setUser(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
+    }
+
+    const fetchProducts = async () => {
       try {
-        const data = await getDocs(productsCollectionRef);
-        const productsArray = data.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        const querySnapshot = await getDocs(productsCollectionRef);
+
+        const productsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id, // Get the document ID
+          ...doc.data(), // Get the document data
         }));
-        setProducts(productsArray); // Set image URLs to the correct state
-        console.log(productsArray); // Log the array of image URLs
-      } catch (error) {
-        console.error("Error fetching products:", error);
+
+        setProducts(productsList);
+
+        console.log("the user products:", products);
+      } catch (err) {
+        console.error("Error fetching products:", err);
       }
     };
 
-    getProducts();
+    fetchProducts();
+  }, [userId]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        console.error("User is not authenticated");
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
   const wishListProducts = products.filter((product) => {
@@ -77,7 +112,12 @@ export default function WishlistPage() {
         }}
         spacing={3}
       >
-        {listItems}
+        {listItems.length > 0 ? (
+          listItems
+        ) : (
+          <h1 style={{ color: "white" }}>Your Wishlist is empty!</h1>
+        )}
+        {/* {listItems} */}
       </Stack>
     </ThemeProvider>
   );
