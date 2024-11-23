@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 4000; // Use PORT from env, or default to 5000
 
 // Function to generate images using OpenAI API
 async function generateImages(prompt) {
-  const apiKey = process.env.OPENAI_API_KEY_1; // Make sure to set your OpenAI API key
+  const apiKey = process.env.OPENAI_API_KEY5; // Make sure to set your OpenAI API key
 
   const url = "https://api.openai.com/v1/images/generations";
 

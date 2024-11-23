@@ -84,7 +84,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={FoodBoxType}
                 title={"Lunch boxes"}
-                value={{ type: "green silicone lunchbox with a divided interior", price: "15SR" }}
+                value={{ type: "green rounded rectangular silicone lunchbox", price: "15SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants} // Pass the animation variants
               />
