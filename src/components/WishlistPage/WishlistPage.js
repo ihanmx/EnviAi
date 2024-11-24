@@ -103,7 +103,7 @@ export default function WishlistPage() {
       <Stack
         sx={{
           height: "100vh",
-          width: "100vw",
+          maxWidth: "100vw",
           display: "flex",
           alignItems: "center", // Center horizontally
           backgroundColor: theme.palette.primary.main,
