@@ -240,7 +240,7 @@ const DesignWithAIPage = () => {
       const response = await axios.post(
         "http://localhost:4000/generate-images",
         {
-          prompt: `Create a front view of a ${productType.type} featuring a high-quality print of '${prompt}' on its surface. The design should be vibrant and visually appealing, showcasing the colors and details clearly.`,
+          prompt: `Generate a clear front view of a ${productType.type} displaying a stunning, hyper-detailed, high-resolution print of '${prompt}' on its surface, with soft, natural lighting that enhances the product's features, ensuring that only the product is visible.`,
         }
       );
 
