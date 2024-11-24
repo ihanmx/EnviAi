@@ -82,16 +82,24 @@ function HomePageBody() {
                 Environmental AI design factory
               </h2>
             )}
-            <Button
-              variant="contained"
+
+            <Link
+              to={"/AboutPage"}
               style={{
-                backgroundColor: "green",
-                fontSize: "20px",
                 marginBottom: "10px",
               }}
             >
-              See more
-            </Button>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "green",
+                  fontSize: "20px",
+                  marginBottom: "10px",
+                }}
+              >
+                See more
+              </Button>
+            </Link>
             <br />
             <Link
               to={"/login"}

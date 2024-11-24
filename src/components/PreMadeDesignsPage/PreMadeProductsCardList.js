@@ -37,6 +37,7 @@ export default function PreMadeProductsCardList() {
 
   const userId = auth.currentUser ? auth.currentUser.uid : null;
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState();
   const productsCollectionRef = collection(db, `users/${userId}/products`);
   const products1CollectionRef = collection(db, "products");
 
@@ -47,6 +48,7 @@ export default function PreMadeProductsCardList() {
     }
 
     const fetchAndMergeProducts = async () => {
+      setLoading(true); // Set loading to true when starting the fetch
       try {
         // Fetch existing user products
         const querySnapshot = await getDocs(productsCollectionRef);
@@ -87,11 +89,13 @@ export default function PreMadeProductsCardList() {
         console.log("Fetched products1:", products1List);
       } catch (err) {
         console.error("Error merging products:", err);
+      } finally {
+        setLoading(false); // Set loading to false after the fetch completes
       }
     };
 
     fetchAndMergeProducts();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -156,71 +160,77 @@ export default function PreMadeProductsCardList() {
 
   return (
     <>
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          minWidth: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {products1.map((product1, index) => {
-          // Find the corresponding product from the `products` array
-          const matchedProduct = products.find((p) => p.id === product1.id);
+      {loading ? (
+        <Typography variant="h4" align="center" sx={{ color: "white" }}>
+          Loading...
+        </Typography>
+      ) : (
+        <Grid
+          container
+          spacing={4}
+          sx={{
+            minWidth: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {products1.map((product1, index) => {
+            // Find the corresponding product from the `products` array
+            const matchedProduct = products.find((p) => p.id === product1.id);
 
-          // Determine the wishlist and cart status
-          const isInWishList = matchedProduct?.isInWishList || false;
-          const isInCart = matchedProduct?.isInCart || false;
+            // Determine the wishlist and cart status
+            const isInWishList = matchedProduct?.isInWishList || false;
+            const isInCart = matchedProduct?.isInCart || false;
 
-          return (
-            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} key={index}>
-              <Card key={product1.productId}>
-                <img
-                  src={product1.productImg}
-                  alt={`Generated ${index + 1}`}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                    padding: "10px",
-                    borderRadius: "15px",
-                  }}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h4" component="div">
-                    {product1.productName}
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {product1.productDetails}
-                  </Typography>
-                </CardContent>
+            return (
+              <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4 }} key={index}>
+                <Card key={product1.productId}>
+                  <img
+                    src={product1.productImg}
+                    alt={`Generated ${index + 1}`}
+                    style={{
+                      maxWidth: "100%",
+                      height: "auto",
+                      padding: "10px",
+                      borderRadius: "15px",
+                    }}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h4" component="div">
+                      {product1.productName}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {product1.productDetails}
+                    </Typography>
+                  </CardContent>
 
-                <CardActions>
-                  <Stack direction={"row"}>
-                    <FavoriteBorderIcon
-                      style={{
-                        color: isInWishList ? "red" : "#077241",
-                      }}
-                      onClick={() => {
-                        handleAddToWish(product1.id);
-                      }}
-                    />
-                    <ShoppingCartIcon
-                      style={{
-                        color: isInCart ? "red" : "#077241",
-                      }}
-                      onClick={() => {
-                        handleAddToCart(product1.id);
-                      }}
-                    />
-                  </Stack>
-                </CardActions>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+                  <CardActions>
+                    <Stack direction={"row"}>
+                      <FavoriteBorderIcon
+                        style={{
+                          color: isInWishList ? "red" : "#077241",
+                        }}
+                        onClick={() => {
+                          handleAddToWish(product1.id);
+                        }}
+                      />
+                      <ShoppingCartIcon
+                        style={{
+                          color: isInCart ? "red" : "#077241",
+                        }}
+                        onClick={() => {
+                          handleAddToCart(product1.id);
+                        }}
+                      />
+                    </Stack>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      )}
     </>
   );
 }

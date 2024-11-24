@@ -1,6 +1,7 @@
 // react
 import React, { Component, useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation to access passed state
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // AI backend
 import axios from "axios"; // To handle requests to the backend
@@ -126,6 +127,7 @@ const DesignWithAIPage = () => {
 
     return unsubscribe;
   }, []);
+
   useEffect(() => {
     const setProducts1ToNotNew = async () => {
       try {
@@ -282,6 +284,8 @@ const DesignWithAIPage = () => {
 
           return updatedProducts;
         });
+
+        window.location.reload(); // Refresh the page
       }
     } catch (err) {
       setError("Error generating images. Please try again.");
@@ -299,7 +303,7 @@ const DesignWithAIPage = () => {
           padding: "20px",
           height: "auto",
           minHeight: "100vh",
-          width: "100vw",
+          maxWidth: "100vw",
           backgroundColor: theme.palette.primary.main,
         }}
       >
@@ -340,6 +344,28 @@ const DesignWithAIPage = () => {
 
         {/* Error message */}
         {error && <p style={{ color: "red" }}>{error}</p>}
+        {error == "You should choose the product type first!" ? (
+          <Link
+            to={"/ChooseProductPage"}
+            style={{
+              marginBottom: "10px",
+            }}
+          >
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "white",
+                color: "green",
+                fontSize: "20px",
+                marginBottom: "10px",
+              }}
+            >
+              Choose Product
+            </Button>
+          </Link>
+        ) : (
+          ""
+        )}
 
         {/* Display the generated images or the AI robot image */}
         {products.filter((product) => product.isNewProduct).length > 0 ? (

@@ -23,6 +23,7 @@ import { UserDataContext } from "./Contexts/UserDataContext";
 import { ProductTypeContext } from "./Contexts/ProductTypeContext";
 import { ToastProvider } from "./Contexts/ToastProvider.js";
 import { Products1Context } from "./Contexts/Products1Context.js";
+import { ProductsProvider } from "./Contexts/ProductsProvider";
 
 // Backend
 import { AuthComponent } from "./components/auth";
@@ -106,43 +107,48 @@ function App() {
                 <CartProductsContext.Provider
                   value={{ CartProducts, setCartProducts }}
                 >
-                  <div>
-                    <AuthComponent />
-                    {/* <input placeholder="search" type="text" /> */}
+                  <ProductsProvider>
+                    <div>
+                      <AuthComponent />
+                      {/* <input placeholder="search" type="text" /> */}
 
-                    {/* Routes */}
-                    <Routes>
-                      <Route path="/" element={<Homepage />}></Route>
-                      <Route path="/Homepage" element={<Homepage />}></Route>
-                      <Route path="/login" element={<LoginPage />}></Route>
-                      <Route path="/signin" element={<SignInPage />}></Route>
-                      <Route
-                        path="/DesignWhithAI"
-                        element={<DesignWhithAIPage />}
-                      ></Route>
-                      <Route
-                        path="/ChooseProductPage"
-                        element={<ChooseProductPage />}
-                      ></Route>
-                      <Route
-                        path="/AccountPage"
-                        element={<AccountPage />}
-                      ></Route>
-                      <Route
-                        path="/CheckoutPage"
-                        element={<CheckoutPage />}
-                      ></Route>
-                      <Route
-                        path="/WishlistPage"
-                        element={<WishlistPage />}
-                      ></Route>
-                      <Route
-                        path="/PreMadeDesignsPage"
-                        element={<PreMadeDesignsPage />}
-                      ></Route>
-                      <Route path="/AboutPage" element={<AboutPage />}></Route>
-                    </Routes>
-                  </div>
+                      {/* Routes */}
+                      <Routes>
+                        <Route path="/" element={<Homepage />}></Route>
+                        <Route path="/Homepage" element={<Homepage />}></Route>
+                        <Route path="/login" element={<LoginPage />}></Route>
+                        <Route path="/signin" element={<SignInPage />}></Route>
+                        <Route
+                          path="/DesignWhithAI"
+                          element={<DesignWhithAIPage />}
+                        ></Route>
+                        <Route
+                          path="/ChooseProductPage"
+                          element={<ChooseProductPage />}
+                        ></Route>
+                        <Route
+                          path="/AccountPage"
+                          element={<AccountPage />}
+                        ></Route>
+                        <Route
+                          path="/CheckoutPage"
+                          element={<CheckoutPage />}
+                        ></Route>
+                        <Route
+                          path="/WishlistPage"
+                          element={<WishlistPage />}
+                        ></Route>
+                        <Route
+                          path="/PreMadeDesignsPage"
+                          element={<PreMadeDesignsPage />}
+                        ></Route>
+                        <Route
+                          path="/AboutPage"
+                          element={<AboutPage />}
+                        ></Route>
+                      </Routes>
+                    </div>
+                  </ProductsProvider>
                 </CartProductsContext.Provider>
               </ProductTypeContext.Provider>
             </ProductsContext.Provider>

@@ -53,7 +53,9 @@ export default function SignInPage() {
 
     // Validate password
     if (!isPasswordValid(password)) {
-      setError("Password must be at least 8 characters long, contain at least one uppercase letter and one number.");
+      setError(
+        "Password must be at least 8 characters long, contain at least one uppercase letter and one number."
+      );
       return; // Exit the function if the password is invalid
     }
 
