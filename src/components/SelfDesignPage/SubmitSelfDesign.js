@@ -129,7 +129,7 @@ export default function SubmitSelfDesign() {
       <Stack
         style={{
           alignItems: "center",
-          justifyContent: "center",
+      
           height: "100vh",
           width: "100vw",
           backgroundColor: theme.palette.primary.main,
