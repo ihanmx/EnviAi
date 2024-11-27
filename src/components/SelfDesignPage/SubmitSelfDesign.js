@@ -213,7 +213,7 @@ export default function SubmitSelfDesign() {
         sx={{
           "& .MuiDialog-paper": {
             width: "50vw",
-            height: "40vh",
+            height: "55vh",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "center",
