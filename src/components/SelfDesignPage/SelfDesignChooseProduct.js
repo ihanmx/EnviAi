@@ -1,5 +1,5 @@
 import MainNav from "../Navs/MainNav";
-import ProductsCard from "./ProductsCard";
+import ProductsCard from "../ChooseProductPage/ProductsCard";
 
 // assets
 import FoodBoxType from "../../images/FoodBoxType.png";
@@ -11,8 +11,12 @@ import TshirtType from "../../images/TshirtType.png";
 
 // MUI
 import Grid from "@mui/material/Grid2";
-import { ProductTypeContext } from "../../Contexts/ProductTypeContext";
+
 import { Stack } from "@mui/material";
+
+// Contexts
+
+import { SelfProductTypeContext } from "../../Contexts/SelfProductTypeContext";
 
 // hooks
 import { useContext, useEffect } from "react";
@@ -21,8 +25,10 @@ import { useNavigate } from "react-router-dom";
 // framer motion
 import { motion } from "framer-motion";
 
-export default function ChooseProductPage() {
-  const { productType, setProductType } = useContext(ProductTypeContext);
+export default function SelfDesignChooseProducts() {
+  const { selfProductType, setSelfProductType } = useContext(
+    SelfProductTypeContext
+  );
 
   const gridSquareVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -42,21 +48,47 @@ export default function ChooseProductPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedProductType = JSON.parse(localStorage.getItem("productType"));
-    if (savedProductType) {
-      setProductType(savedProductType);
+    const savedSelfProductType = JSON.parse(
+      localStorage.getItem("selfProductType")
+    );
+    if (savedSelfProductType) {
+      setSelfProductType(savedSelfProductType);
     }
   }, []);
 
   function handleClick(value) {
-    setProductType({ type: value.type, price: value.price });
+    setSelfProductType({ type: value.type, price: value.price });
     localStorage.setItem(
-      "productType",
+      "selfProductType",
       JSON.stringify({ type: value.type, price: value.price })
     );
-    navigate("/DesignWhithAI", {
-      state: { productType: { type: value.type, price: value.price } },
-    });
+    if (value.type === "green rounded rectangular silicone lunchbox") {
+      navigate("/SelfDesignLunchBox", {
+        state: { productType: { type: value.type, price: value.price } },
+      });
+    } else if (value.type === "white plain tote bag") {
+      navigate("/SelfDesignToteBag", {
+        state: { productType: { type: value.type, price: value.price } },
+      });
+    } else if (value.type === "black phone case for an iPhone 12") {
+      navigate("/SelfDesignMobileCover", {
+        state: { productType: { type: value.type, price: value.price } },
+      });
+    } else if (
+      value.type === "plain green t-shirt with short sleeves and a crew neck"
+    ) {
+      navigate("/SelfDesignTShirt", {
+        state: { productType: { type: value.type, price: value.price } },
+      });
+    } else if (value.type === "brown notebook with a spiral binding") {
+      navigate("/SelfDesignNoteBook", {
+        state: { productType: { type: value.type, price: value.price } },
+      });
+    } else if (value.type === "black stainless steel thermos") {
+      navigate("/SelfDesignMug", {
+        state: { productType: { type: value.type, price: value.price } },
+      });
+    }
   }
 
   return (

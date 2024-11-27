@@ -50,6 +50,7 @@ export default function MainNav({ isDarkMode }) {
       "/DesignWhithAI": 1,
       "/PreMadeDesignsPage": 2,
       "/AboutPage": 3,
+      "/SelfDesignChooseProductsPage": 4,
     };
     setValue(pathMap[location.pathname]);
   }, [location.pathname]);
@@ -161,6 +162,15 @@ export default function MainNav({ isDarkMode }) {
                 >
                   <ListItemText primary="About" />
                 </ListItem>
+
+                <ListItem
+                  button
+                  component={Link}
+                  to="/SelfDesignChooseProductsPage"
+                  onClick={toggleDrawer(false)}
+                >
+                  <ListItemText primary="Self-Design" />
+                </ListItem>
               </List>
               <Divider />
             </Drawer>
@@ -201,6 +211,11 @@ export default function MainNav({ isDarkMode }) {
                 to="/PreMadeDesignsPage"
               />
               <Tab label="About" component={Link} to="/AboutPage" />
+              <Tab
+                label="Self-Design"
+                component={Link}
+                to="/SelfDesignChooseProductsPage"
+              />
             </Tabs>
 
             {/* Icons section */}

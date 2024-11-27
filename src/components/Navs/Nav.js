@@ -35,6 +35,7 @@ function Nav({ isLoggedIn }) {
       "/login": 1,
       "/login": 2,
       "/AboutPage": 3,
+      "/SelfDesignChooseProductsPage": 4,
     };
     setValue(pathMap[location.pathname] || 0);
   }, [location.pathname]);
@@ -132,6 +133,15 @@ function Nav({ isLoggedIn }) {
               >
                 <ListItemText primary="About" />
               </ListItem>
+
+              <ListItem
+                button
+                component={Link}
+                to="/login"
+                onClick={toggleDrawer(false)}
+              >
+                <ListItemText primary="Self-Design" />
+              </ListItem>
             </List>
             <Divider />
           </Drawer>
@@ -155,6 +165,7 @@ function Nav({ isLoggedIn }) {
             <Tab label="Design now" component={Link} to="/login" />
             <Tab label="PRE-MADE DESIGNS" component={Link} to="/login" />
             <Tab label="About" component={Link} to="/AboutPage" />
+            <Tab label="Self-Design" component={Link} to="/login" />
           </Tabs>
 
           {/* Create Account Button only visible if not logged in */}

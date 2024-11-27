@@ -12,6 +12,14 @@ import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import WishlistPage from "./components/WishlistPage/WishlistPage";
 import PreMadeDesignsPage from "./components/PreMadeDesignsPage/PreMadeDesignsPage";
 import AboutPage from "./components/AboutPage/AboutPage.js";
+import SelfT from "./components/SelfDesignPage/SelfT.js";
+import SelfB from "./components/SelfDesignPage/SelfB.js";
+import SelfC from "./components/SelfDesignPage/SelfC.js";
+import SelfN from "./components/SelfDesignPage/SelfN.js";
+import SelfM from "./components/SelfDesignPage/SelfM.js";
+import SelfF from "./components/SelfDesignPage/SelfF.js";
+import SelfDesignChooseProducts from "./components/SelfDesignPage/SelfDesignChooseProduct.js";
+import SubmitSelfDesign from "./components/SelfDesignPage/SubmitSelfDesign.js";
 // react
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -23,6 +31,7 @@ import { UserDataContext } from "./Contexts/UserDataContext";
 import { ProductTypeContext } from "./Contexts/ProductTypeContext";
 import { ToastProvider } from "./Contexts/ToastProvider.js";
 import { Products1Context } from "./Contexts/Products1Context.js";
+import { SelfProductTypeContext } from "./Contexts/SelfProductTypeContext.js";
 import { ProductsProvider } from "./Contexts/ProductsProvider";
 
 // Backend
@@ -71,29 +80,14 @@ function App() {
     language: "",
   });
   const [productType, setProductType] = useState({ type: "", price: "" });
+  const [selfProductType, setSelfProductType] = useState({
+    type: "",
+    price: "",
+  });
 
   const [products, setProducts] = useState(productsinitial);
 
   const [products1, setProducts1] = useState(products1initial);
-
-  // const productCollectionRef = collection(db, "products");
-
-  // useEffect(() => {
-  //   const getProducts = async () => {
-  //     try {
-  //       const data = await getDocs(productCollectionRef);
-  //       const filteredData = data.docs.map((doc) => ({
-  //         ...doc.data(),
-  //         id: doc.id,
-  //       }));
-  //       setProducts(filteredData);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-
-  //   getProducts();
-  // }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -104,52 +98,102 @@ function App() {
               <ProductTypeContext.Provider
                 value={{ productType, setProductType }}
               >
-                <CartProductsContext.Provider
-                  value={{ CartProducts, setCartProducts }}
+                <SelfProductTypeContext.Provider
+                  value={{ selfProductType, setSelfProductType }}
                 >
-                  <ProductsProvider>
-                    <div>
-                      <AuthComponent />
-                      {/* <input placeholder="search" type="text" /> */}
+                  <CartProductsContext.Provider
+                    value={{ CartProducts, setCartProducts }}
+                  >
+                    <ProductsProvider>
+                      <div>
+                        <AuthComponent />
+                        {/* <input placeholder="search" type="text" /> */}
 
-                      {/* Routes */}
-                      <Routes>
-                        <Route path="/" element={<Homepage />}></Route>
-                        <Route path="/Homepage" element={<Homepage />}></Route>
-                        <Route path="/login" element={<LoginPage />}></Route>
-                        <Route path="/signin" element={<SignInPage />}></Route>
-                        <Route
-                          path="/DesignWhithAI"
-                          element={<DesignWhithAIPage />}
-                        ></Route>
-                        <Route
-                          path="/ChooseProductPage"
-                          element={<ChooseProductPage />}
-                        ></Route>
-                        <Route
-                          path="/AccountPage"
-                          element={<AccountPage />}
-                        ></Route>
-                        <Route
-                          path="/CheckoutPage"
-                          element={<CheckoutPage />}
-                        ></Route>
-                        <Route
-                          path="/WishlistPage"
-                          element={<WishlistPage />}
-                        ></Route>
-                        <Route
-                          path="/PreMadeDesignsPage"
-                          element={<PreMadeDesignsPage />}
-                        ></Route>
-                        <Route
-                          path="/AboutPage"
-                          element={<AboutPage />}
-                        ></Route>
-                      </Routes>
-                    </div>
-                  </ProductsProvider>
-                </CartProductsContext.Provider>
+                        {/* Routes */}
+                        <Routes>
+                          <Route path="/" element={<Homepage />}></Route>
+                          <Route
+                            path="/Homepage"
+                            element={<Homepage />}
+                          ></Route>
+                          <Route path="/login" element={<LoginPage />}></Route>
+                          <Route
+                            path="/signin"
+                            element={<SignInPage />}
+                          ></Route>
+                          <Route
+                            path="/DesignWhithAI"
+                            element={<DesignWhithAIPage />}
+                          ></Route>
+                          <Route
+                            path="/ChooseProductPage"
+                            element={<ChooseProductPage />}
+                          ></Route>
+                          <Route
+                            path="/AccountPage"
+                            element={<AccountPage />}
+                          ></Route>
+                          <Route
+                            path="/CheckoutPage"
+                            element={<CheckoutPage />}
+                          ></Route>
+                          <Route
+                            path="/WishlistPage"
+                            element={<WishlistPage />}
+                          ></Route>
+                          <Route
+                            path="/PreMadeDesignsPage"
+                            element={<PreMadeDesignsPage />}
+                          ></Route>
+                          <Route
+                            path="/AboutPage"
+                            element={<AboutPage />}
+                          ></Route>
+
+                          <Route
+                            path="/SelfDesignTShirt"
+                            element={<SelfT />}
+                          ></Route>
+
+                          <Route
+                            path="/SelfDesignToteBag"
+                            element={<SelfB />}
+                          ></Route>
+
+                          <Route
+                            path="/SelfDesignMobileCover"
+                            element={<SelfC />}
+                          ></Route>
+
+                          <Route
+                            path="/SelfDesignNoteBook"
+                            element={<SelfN />}
+                          ></Route>
+
+                          <Route
+                            path="/SelfDesignMug"
+                            element={<SelfM />}
+                          ></Route>
+
+                          <Route
+                            path="/SelfDesignLunchBox"
+                            element={<SelfF />}
+                          ></Route>
+
+                          <Route
+                            path="/SelfDesignChooseProductsPage"
+                            element={<SelfDesignChooseProducts />}
+                          ></Route>
+
+                          <Route
+                            path="/SubmitSelfDesignPage"
+                            element={<SubmitSelfDesign />}
+                          ></Route>
+                        </Routes>
+                      </div>
+                    </ProductsProvider>
+                  </CartProductsContext.Provider>
+                </SelfProductTypeContext.Provider>
               </ProductTypeContext.Provider>
             </ProductsContext.Provider>
           </Products1Context.Provider>

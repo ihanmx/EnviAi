@@ -53,7 +53,7 @@ import { setDoc, getDoc } from "firebase/firestore";
 
 const DesignWithAIPage = () => {
   const location = useLocation(); // Get the location object
-  const { productType } = useContext(ProductTypeContext);
+  const { productType, setProductType } = useContext(ProductTypeContext);
 
   const [prompt, setPrompt] = useState(""); // To store the user input
   const [imageUrls, setImageUrls] = useState([]); // To store the generated image URLs
@@ -149,6 +149,21 @@ const DesignWithAIPage = () => {
     setProducts1ToNotNew();
   }, []);
 
+  useEffect(() => {
+    const savedProductType = localStorage.getItem("productType");
+    console.log("The saved", savedProductType);
+    if (savedProductType) {
+      try {
+        const parsedProductType = JSON.parse(savedProductType);
+
+        setProductType(parsedProductType); // Set the parsed object to the state
+        console.log("The setted", productType);
+        console.log("the read", parsedProductType);
+      } catch (error) {
+        console.error("Error parsing productType from localStorage:", error);
+      }
+    }
+  }, []);
   // handlers
   // //////////////////////Add to wish//////////////////////////////////////////////////////////
   const handleAddToWish = async (firebaseId) => {

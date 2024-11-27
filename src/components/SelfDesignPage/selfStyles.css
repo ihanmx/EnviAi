@@ -1,0 +1,134 @@
+.Tcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/greenT.png);
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.Bcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/ToteBagSelf.png);
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.Ccontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/SelfMobile.png);
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.Ncontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/SelfNote.png);
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.Mcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/Selfmug.png);
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.Fcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/SelfBox.png);
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+canvas {
+  border: 2px dotted rgb(168, 168, 168);
+  box-sizing: border-box;
+}
+/* selfStyles.css */
+.Tcontainer {
+  display: flex; /* Flexbox to layout the canvas and buttons */
+  height: 100vh;
+}
+
+.canvas-container {
+  flex: 1; /* Take the available space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  margin-left: 20px;
+  padding: 10px;
+}
+/* Add styles for the custom file input */
+.image-input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-file-input {
+  padding: 10px 20px;
+  background-color: #077241;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 50px; /* For rounded shape */
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.custom-file-input:hover {
+  background-color: #45a049;
+}
+
+.custom-file-input:active {
+  background-color: #3e8e41;
+}
