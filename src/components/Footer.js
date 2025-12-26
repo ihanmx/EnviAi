@@ -17,7 +17,7 @@ export default function Footer() {
           className="logoFooter"
           style={{ display: "flex", justifyContent: "center" }}
         >
-          <img src={footerLogo} style={{ height: "60px" }} />
+          <img src={footerLogo} style={{ height: "50px" }} />
         </div>
         <div
           className="socialMediaFooter"

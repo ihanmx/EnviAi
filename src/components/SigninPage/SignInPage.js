@@ -134,7 +134,7 @@ export default function SignInPage() {
             style={{ textAlign: "center" }}
           >
             <h1 style={{ margin: "0 0 10px 0" }}>Sign up</h1>
-            <p>Create an account!</p>
+            <p style={{ color: "gray" }}>Create an account!</p>
           </motion.div>
 
           <motion.div

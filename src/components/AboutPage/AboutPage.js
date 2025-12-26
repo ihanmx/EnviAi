@@ -87,7 +87,7 @@ export default function AboutPage() {
               transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             >
               <h2 style={{ fontFamily: "Poppins" }}>About Us</h2>
-              <p style={{ fontFamily: "Roboto" }}>
+              <p style={{ fontFamily: "Roboto", color: "gray" }}>
                 Welcome to EnviAI, where sustainability meets creativity. We
                 believe in empowering you to make eco-conscious choices while
                 expressing your unique style and ideas. Our mission is to
@@ -143,7 +143,7 @@ export default function AboutPage() {
                   transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
                 >
                   <h2 style={{ fontFamily: "Poppins" }}>What We Do</h2>
-                  <p style={{ fontFamily: "Roboto" }}>
+                  <p style={{ fontFamily: "Roboto", color: "gray" }}>
                     Using the power of AI, we generate custom designs that bring
                     your visions to life. Simply choose from our range of
                     eco-friendly products, type in your text or idea, and watch
@@ -204,7 +204,13 @@ export default function AboutPage() {
                   transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
                 >
                   <h2 style={{ fontFamily: "Poppins" }}>What We Do</h2>
-                  <p style={{ fontFamily: "Roboto", lineHeight: "1.5 " }}>
+                  <p
+                    style={{
+                      fontFamily: "Roboto",
+                      lineHeight: "1.5 ",
+                      color: "gray",
+                    }}
+                  >
                     Using the power of AI, we generate custom designs that bring
                     your visions to life. Simply choose from our range of
                     eco-friendly products, type in your text or idea, and watch
@@ -245,7 +251,13 @@ export default function AboutPage() {
               <h2 style={{ fontFamily: "Poppins" }}>
                 Our Commitment to Sustainability
               </h2>
-              <p style={{ fontFamily: "Roboto", lineHeight: "1.5 " }}>
+              <p
+                style={{
+                  fontFamily: "Roboto",
+                  lineHeight: "1.5 ",
+                  color: "gray",
+                }}
+              >
                 We are dedicated to protecting the environment and promoting
                 responsible consumption. All our products are made from
                 sustainable materials, ensuring that every purchase you make is
@@ -301,8 +313,14 @@ export default function AboutPage() {
                   transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
                 >
                   <h2 style={{ fontFamily: "Poppins" }}>Our Story</h2>
-                  <p style={{ fontFamily: "Roboto", lineHeight: "1.5 " }}>
-                    Made with passion and love by Hanan Biazid, Sara Taema, and
+                  <p
+                    style={{
+                      fontFamily: "Roboto",
+                      lineHeight: "1.5 ",
+                      color: "gray",
+                    }}
+                  >
+                    Made with passion and love by Hanan Biazid, Sara Tiema, and
                     Shaykhah Aldosari to bring out their programming skills in
                     the form of a website that serves the community using modern
                     artificial intelligence technologies.
@@ -362,8 +380,14 @@ export default function AboutPage() {
                   transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
                 >
                   <h2 style={{ fontFamily: "Poppins" }}>Our Story</h2>
-                  <p style={{ fontFamily: "Roboto", lineHeight: "1.5 " }}>
-                    Made with passion and love by Hanan Biazid, Sara Taema, and
+                  <p
+                    style={{
+                      fontFamily: "Roboto",
+                      lineHeight: "1.5 ",
+                      color: "gray",
+                    }}
+                  >
+                    Made with passion and love by Hanan Biazid, Sara Teima, and
                     Shaykhah Aldosari to bring out their programming skills in
                     the form of a website that serves the community using modern
                     artificial intelligence technologies.

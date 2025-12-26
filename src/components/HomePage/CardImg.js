@@ -70,7 +70,7 @@ export default function CardImg({
           gutterBottom
           component="div"
           sx={{
-            fontSize: isMedium ? "18px" : "20px",
+            fontSize: isMedium ? "16px" : "18px",
             color: !greenBg ? "black" : "white",
             paddingTop: "20px",
             fontFamily: "Poppins",
@@ -93,7 +93,7 @@ export default function CardImg({
           gutterBottom
           component="div"
           sx={{
-            fontSize: isMedium ? "18px" : "20px",
+            fontSize: isMedium ? "14px" : "16px",
             color: !greenBg ? "black" : "white",
 
             fontFamily: "Poppins",

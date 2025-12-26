@@ -78,7 +78,7 @@ export default function LoginPage() {
             style={{ textAlign: "center" }}
           >
             <h1 style={{ margin: "0 0 10px 0" }}>Log in</h1>
-            <p>Welcome back !!</p>
+            <p style={{ color: "gray" }}>Welcome back !!</p>
           </motion.div>
 
           <motion.div

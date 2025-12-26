@@ -129,9 +129,8 @@ export default function SubmitSelfDesign() {
       <Stack
         style={{
           alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-          width: "100vw",
+          minHeight: "100vh",
+          maxWidth: "100vw",
           backgroundColor: theme.palette.primary.main,
           padding: "20px",
         }}
@@ -140,11 +139,11 @@ export default function SubmitSelfDesign() {
         <div
           style={{
             width: "50%",
-            height: "60%",
+
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "30px",
+            padding: "20px",
             backgroundColor: "white",
             borderRadius: "5px",
           }}
@@ -152,14 +151,14 @@ export default function SubmitSelfDesign() {
           <form
             style={{
               width: "80%",
-              height: "90%",
+
               display: "flex",
               justifyContent: "center",
               flexDirection: "column",
               gap: "20px",
             }}
           >
-            <h2 style={{ textAlign: "left" }}>Product Name</h2>
+            <h3 style={{ textAlign: "left" }}>Product Name</h3>
             <TextField
               fullWidth
               id="filled-read-only-input"
@@ -172,7 +171,7 @@ export default function SubmitSelfDesign() {
                 },
               }}
             />
-            <h2 style={{ textAlign: "left" }}>Product Price</h2>
+            <h3 style={{ textAlign: "left" }}>Product Price</h3>
             <TextField
               fullWidth
               id="filled-read-only-input"
@@ -185,7 +184,7 @@ export default function SubmitSelfDesign() {
                 },
               }}
             />
-            <h2 style={{ textAlign: "left" }}>Upload your design</h2>
+            <h3 style={{ textAlign: "left" }}>Upload your design</h3>
             <input
               className="custom-file-input"
               type="file"
@@ -213,7 +212,7 @@ export default function SubmitSelfDesign() {
         sx={{
           "& .MuiDialog-paper": {
             width: "50vw",
-            height: "40vh",
+            height: "55vh",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "center",
@@ -233,9 +232,9 @@ export default function SubmitSelfDesign() {
           <CheckCircleIcon
             sx={{
               color: "green",
-              fontSize: "140px",
+              fontSize: "120px",
               textAlign: "center",
-              marginLeft: "20px",
+              marginLeft: "30px",
             }}
           />
         </DialogContent>

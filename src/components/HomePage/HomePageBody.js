@@ -55,14 +55,15 @@ function HomePageBody() {
               src={logoTitle}
               style={{
                 objectFit: "contain",
-                width: isMedium ? "180px" : "280px",
+                width: isMedium ? "180px" : "240px",
+                margin: "5px",
               }}
               alt="enviAi title"
             />
           </div>
           <div>
             {isMedium ? (
-              <h3
+              <h4
                 style={{
                   fontFamily: "Poppins",
                   margin: "5px",
@@ -70,9 +71,9 @@ function HomePageBody() {
                 }}
               >
                 Environmental AI design factory
-              </h3>
+              </h4>
             ) : (
-              <h2
+              <h3
                 style={{
                   fontFamily: "Poppins",
                   margin: "10px",
@@ -80,7 +81,7 @@ function HomePageBody() {
                 }}
               >
                 Environmental AI design factory
-              </h2>
+              </h3>
             )}
 
             <Link
@@ -93,7 +94,7 @@ function HomePageBody() {
                 variant="contained"
                 style={{
                   backgroundColor: "green",
-                  fontSize: "20px",
+                  fontSize: isMedium ? "16px" : "18px",
                   marginBottom: "10px",
                 }}
               >

@@ -38,6 +38,8 @@ import { v4 as uuidv4 } from "uuid";
 // framer motion
 import { motion } from "framer-motion";
 
+// mediaQuery
+import Mediaquery from "../../Mediaquery";
 //firebase
 import { db } from "../../config/firebase";
 import {
@@ -69,6 +71,14 @@ const DesignWithAIPage = () => {
   const productsCollectionRef = collection(db, `users/${userId}/products`);
   const products1CollectionRef = collection(db, "products");
 
+  const {
+    isSmall,
+    isMedium,
+    isLarge,
+    isExtraLarge,
+    is2ExtraLarge,
+    isUltraLarge,
+  } = Mediaquery();
   useEffect(() => {
     if (!userId) {
       console.log("user ID not provided");
@@ -255,7 +265,7 @@ const DesignWithAIPage = () => {
       const response = await axios.post(
         "http://localhost:4000/generate-images",
         {
-          prompt: `Generate a clear front view of a ${productType.type} displaying a stunning, hyper-detailed, high-resolution print of '${prompt}' on its surface, with soft, natural lighting that enhances the product's features, ensuring that only the product is visible.`,
+          prompt: `Generate a clear front view of a ${productType.type} displaying a stunning, hyper-detailed, high-resolution print of '${prompt}' on its surface, with soft, natural lighting that enhances the product's features, ensuring that only the product is visible make sure that the background behind the product is plain and there is no human holding the products at all.`,
         }
       );
 
@@ -322,9 +332,15 @@ const DesignWithAIPage = () => {
           backgroundColor: theme.palette.primary.main,
         }}
       >
-        <h1 style={{ color: "white" }}>
-          Generate special designs using the AI !!
-        </h1>
+        {isMedium ? (
+          <h1 style={{ color: "white" }}>
+            Generate special designs using the AI !!
+          </h1>
+        ) : (
+          <h2 style={{ color: "white" }}>
+            Generate special designs using the AI !!
+          </h2>
+        )}
         {/* Input field for the prompt */}
         <input
           type="text"
@@ -332,9 +348,9 @@ const DesignWithAIPage = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           style={{
-            padding: "20px",
+            padding: isMedium ? "10px" : "20px",
             width: "80%",
-            marginBottom: "10px",
+
             borderRadius: "50px",
             border: "none",
           }}
@@ -438,7 +454,10 @@ const DesignWithAIPage = () => {
               <img
                 src={AIRobot}
                 alt="AI Robot Placeholder"
-                style={{ maxWidth: "30%", marginTop: "20px" }}
+                style={{
+                  maxWidth: isMedium ? "20%" : "25%",
+                  marginTop: isMedium ? "10px" : "20px",
+                }}
               />
               {/* <p style={{ color: "white" }}>
                 No images generated yet. Start by entering a description!

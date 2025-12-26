@@ -15,8 +15,8 @@ export default function SelfC() {
   useEffect(() => {
     if (canvasElementRef.current) {
       const initcanvas = new Canvas(canvasElementRef.current, {
-        width: 600,
-        height: 650,
+        width: 500,
+        height: 550,
       });
 
       initcanvas.backgroundColor = "";

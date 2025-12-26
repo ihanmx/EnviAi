@@ -97,7 +97,7 @@ export default function ChooseProductPage() {
               <ProductsCard
                 img={BagType}
                 title={"Fabric shopping bags"}
-                value={{ type: "white plain tote bag", price: "30SR" }}
+                value={{ type: "white plain tote bag ", price: "30SR" }}
                 clickEvent={handleClick}
                 variants={gridSquareVariants}
               />
