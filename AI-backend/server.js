@@ -17,8 +17,7 @@ async function generateImages(prompt) {
   } else {
     console.log("no");
   }
-  const url = "https://api.openai.com/v1/images/generations";
-
+  const url = proccess.env.OPENAI_URL
   const requestBody = {
     prompt: prompt,
     model: "dall-e-2", // or "dall-e-3" if you prefer
